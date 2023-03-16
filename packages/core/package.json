@@ -1,0 +1,46 @@
+{
+  "name": "@tridata/core",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "build": "vite build && tsc"
+  },
+  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./r": {
+      "import": "./dist/r.js",
+      "require": "./dist/r.cjs"
+    },
+    "./python": {
+      "import": "./dist/python.js",
+      "require": "./dist/python.cjs"
+    },
+    "./sql": {
+      "import": "./dist/sql.js",
+      "require": "./dist/sql.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "index.d.ts",
+    "r.d.ts",
+    "python.d.ts",
+    "sql.d.ts"
+  ],
+  "types": "./dist/index.d.ts",
+  "keywords": [],
+  "author": "Qiushi Yan",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.9.5",
+    "vite": "^4.1.0"
+  },
+  "dependencies": {
+    "@r-wasm/webr": "^0.1.0"
+  }
+}

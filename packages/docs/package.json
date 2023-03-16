@@ -1,0 +1,33 @@
+{
+  "name": "tri",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@r-wasm/webr": "^0.1.0",
+    "@tanstack/react-query": "^4.26.1",
+    "@trpc/client": "^10.15.0",
+    "@trpc/next": "^10.15.0",
+    "@trpc/react-query": "^10.15.0",
+    "@trpc/server": "^10.15.0",
+    "@types/node": "18.15.0",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "next": "13.2.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "superjson": "^1.12.2",
+    "typescript": "4.9.5",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7"
+  }
+}
