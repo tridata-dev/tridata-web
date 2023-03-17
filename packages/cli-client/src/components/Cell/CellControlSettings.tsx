@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import TrashIcon from "../icons/Trash";
 import { useReduxActions } from "@/hooks/redux";
 import CollapseIcon from "../icons/Collapse";
+import { useRunCell } from "@/hooks/run-cell";
 
 type Props = {
 	id: string;
@@ -17,19 +18,9 @@ type Props = {
 
 export default function CellControlSettings({ id }: Props) {
 	const { deleteCell, clearResults } = useReduxActions();
-	const dispatch = useReduxDispatch();
+	const runCell = useRunCell();
 
 	const menuItems = [];
-
-	const handleExecute = async () => {
-		dispatch(runCode({ id }))
-			.unwrap()
-			.catch((err) => {
-				if (err instanceof TridataError) {
-					toast(err.message);
-				}
-			});
-	};
 
 	return (
 		<Menu as="div" className="relative inline-block text-left">
@@ -58,7 +49,7 @@ export default function CellControlSettings({ id }: Props) {
 										active ? "bg-gray-100 text-gray-900" : "text-gray-700",
 										" px-2 py-2 text-sm w-full flex items-center justify-start gap-2",
 									)}
-									onClick={() => handleExecute()}
+									onClick={() => runCell({ id })}
 								>
 									<BoltIcon className="w-4 h-4" />
 									Run

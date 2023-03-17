@@ -94,6 +94,8 @@ const cellsSlice = createSlice({
 			const { id } = action.payload;
 			const cell = state.cells[id];
 			cell.results = [];
+			cell.success = false;
+			cell.error = false;
 		},
 	},
 	extraReducers: (builder) => {

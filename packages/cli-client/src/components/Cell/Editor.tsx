@@ -7,13 +7,71 @@ import { r } from "@codemirror/legacy-modes/mode/r";
 import { useCodeMirror } from "@uiw/react-codemirror";
 import { useEffect, useMemo, useRef } from "react";
 import { EditorView } from "@codemirror/view";
-import ChevronDown from "../icons/ChevronDown";
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { CellLanguage, CellLanguages } from "@/lib/constants";
+import ChevronDownIcon from "../icons/ChevronDown";
+import { python } from "@codemirror/lang-python";
+import { sql } from "@codemirror/lang-sql";
+
+const SelectLanguage = ({ id, lang }: { id: string; lang: CellLanguage }) => {
+	const { setCellLanguage } = useReduxActions();
+
+	return (
+		<Menu
+			as="div"
+			className="inline-block text-left absolute right-[1%] top-[5%] bg-indigo-100 hover:bg-indigo-200 rounded-md font-mono"
+		>
+			<div>
+				<Menu.Button className="inline-flex w-full justify-center text-xs gap-x-0.5 rounded-md px-2 py-1 text-gray-900 shadow-sm ">
+					<span>{lang}</span>
+					<ChevronDownIcon
+						className="w-4 h-4 text-gray-400"
+						aria-hidden="true"
+					/>
+				</Menu.Button>
+			</div>
+
+			<Transition
+				as={Fragment}
+				enter="transition ease-out duration-100"
+				enterFrom="transform opacity-0 scale-95"
+				enterTo="transform opacity-100 scale-100"
+				leave="transition ease-in duration-75"
+				leaveFrom="transform opacity-100 scale-100"
+				leaveTo="transform opacity-0 scale-95"
+			>
+				<Menu.Items className="absolute right-0 z-10 mt-2 w-20 origin-top-right rounded-md bg-indigo-100 shadow-lg  focus:outline-none text-sm">
+					<div className="py-1">
+						{CellLanguages.map((lang) => (
+							<Menu.Item key={lang}>
+								{({ active }) => (
+									<button
+										className={cn(
+											active ? "bg-indigo-200 text-gray-900" : "text-gray-700",
+											"block px-2 py-1 text-xs w-full text-left",
+										)}
+										onClick={() => setCellLanguage({ id, lang })}
+									>
+										{lang}
+									</button>
+								)}
+							</Menu.Item>
+						))}
+					</div>
+				</Menu.Items>
+			</Transition>
+		</Menu>
+	);
+};
 
 const editorBaseTheme = EditorView.baseTheme({
+	"&": {
+		padding: "5px",
+	},
 	".cm-content": {
 		fontFamily: "Fira Code, monospace",
 		fontSize: "14px",
-		padding: "3px",
 	},
 	".cm-gutters": {
 		display: "none",
@@ -33,7 +91,16 @@ export default function Editor({ id, cell }: Props) {
 	const { code, lang } = cell;
 
 	const extensions = useMemo(() => {
-		return [StreamLanguage.define(r), editorBaseTheme];
+		const extensions = [editorBaseTheme];
+		if (lang === CellLanguage.R) {
+			extensions.push(StreamLanguage.define(r));
+		} else if (lang === CellLanguage.PYTHON) {
+			extensions.push(python());
+		} else {
+			extensions.push(sql());
+		}
+
+		return extensions;
 	}, [cell.lang]);
 
 	const { setContainer } = useCodeMirror({
@@ -63,12 +130,7 @@ export default function Editor({ id, cell }: Props) {
 					"border-2 border-red-700": cell.error,
 				})}
 			/>
-			<div className="absolute right-[1%] top-[1%] text-white text-sm tracking-tighter flex bg-indigo-100 rounded items-center px-2 py-0.5 ">
-				<span className="inline-flex items-center  text-xs font-medium text-indigo-800">
-					{lang}
-				</span>
-				<ChevronDown className="w-5 h-5 fill-black" />
-			</div>
+			<SelectLanguage lang={cell.lang} id={id} />
 		</div>
 	);
 }
