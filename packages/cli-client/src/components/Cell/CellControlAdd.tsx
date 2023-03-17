@@ -23,8 +23,8 @@ export default function CellControlAdd({ id }: Props) {
 				>
 					<PlusIcon className="w-5 h-5" />
 				</TooltipTrigger>
-				<TooltipContent className="w-20 origin-top-right rounded-md bg-white shadow-lg p-0 border-none">
-					<ul className="bg-white text-black  text-sm p-2">
+				<TooltipContent className="w-24 origin-top-right rounded-md bg-white shadow-lg p-0 border-none">
+					<ul className="bg-white text-black text-sm p-2">
 						{CellLanguages.map((lang) => (
 							<li
 								className="px-2 py-1 rounded-md hover:bg-gray-200 flex justify-start"

@@ -9,14 +9,17 @@ import { TridataError } from "@tridata/core";
 import { toast } from "sonner";
 import TrashIcon from "../icons/Trash";
 import { useReduxActions } from "@/hooks/redux";
+import CollapseIcon from "../icons/Collapse";
 
 type Props = {
 	id: string;
 };
 
 export default function CellControlSettings({ id }: Props) {
-	const { deleteCell } = useReduxActions();
+	const { deleteCell, clearResults } = useReduxActions();
 	const dispatch = useReduxDispatch();
+
+	const menuItems = [];
 
 	const handleExecute = async () => {
 		dispatch(runCode({ id }))
@@ -73,6 +76,20 @@ export default function CellControlSettings({ id }: Props) {
 								>
 									<TrashIcon className="w-4 h-4" />
 									Delete
+								</button>
+							)}
+						</Menu.Item>
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									className={cn(
+										active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+										" px-2 py-2 text-sm w-full flex items-center justify-start gap-2",
+									)}
+									onClick={() => clearResults({ id })}
+								>
+									<CollapseIcon className="w-4 h-4" />
+									Clear
 								</button>
 							)}
 						</Menu.Item>

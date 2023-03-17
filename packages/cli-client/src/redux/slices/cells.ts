@@ -90,6 +90,11 @@ const cellsSlice = createSlice({
 			const cell = state.cells[id];
 			cell.lang = lang;
 		},
+		clearResults(state, action: PayloadAction<{ id: string }>) {
+			const { id } = action.payload;
+			const cell = state.cells[id];
+			cell.results = [];
+		},
 	},
 	extraReducers: (builder) => {
 		builder.addCase(runCode.pending, (state, action) => {

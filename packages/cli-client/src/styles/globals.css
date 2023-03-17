@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300&family=Inter:wght@300;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&family=IBM+Plex+Mono:wght@300&family=Inter:wght@300;500&display=swap');
 
 :root {
     --font-sans-serif: 'Inter', sans-serif;
@@ -27,6 +27,7 @@ html {
 .cell-pending::after {
     filter: blur(5px);
 }
+
 
 @keyframes border {
 
