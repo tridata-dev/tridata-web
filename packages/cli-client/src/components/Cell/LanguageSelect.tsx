@@ -6,11 +6,10 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
-import { SupportedLangauges, SupportedLanguage } from "@/lib/constants";
+import { CellLanguages, CellLanguage } from "@/lib/constants";
 
 interface Props {
-	setLang: (lang: SupportedLanguage) => void;
+	setLang: (lang: CellLanguage) => void;
 }
 
 export default function LanguageSelect({ setLang }: Props) {
@@ -19,7 +18,7 @@ export default function LanguageSelect({ setLang }: Props) {
 			<DropdownMenu>
 				<DropdownMenuTrigger>Select Language</DropdownMenuTrigger>
 				<DropdownMenuContent>
-					{SupportedLangauges.map((lang) => (
+					{CellLanguages.map((lang) => (
 						<DropdownMenuItem onSelect={() => setLang(lang)} key={lang}>
 							{lang}
 						</DropdownMenuItem>

@@ -1,3 +1,3 @@
-import { initWebR } from "./r/init";
+import { initREngine } from "./r/init";
 import { parseRProxy } from "./r/parser";
-export { parseRProxy, initWebR };
+export { parseRProxy, initREngine };

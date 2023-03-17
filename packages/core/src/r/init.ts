@@ -1,6 +1,6 @@
 import { WebR } from "@r-wasm/webr";
 
-export const initWebR = async () => {
+export const initREngine = async () => {
 	const webR = new WebR({
 		REnv: {
 			R_HOME: "/usr/lib/R",

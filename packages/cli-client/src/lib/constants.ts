@@ -1,7 +1,11 @@
-export enum SupportedLanguage {
+export enum CellLanguage {
 	R = "R",
 	PYTHON = "PYTHON",
 	SQL = "SQL",
 }
 
-export const SupportedLangauges = ["R", "PYTHON", "SQL"] as const;
+export const CellLanguages: CellLanguage[] = [
+	CellLanguage.R,
+	CellLanguage.PYTHON,
+	CellLanguage.SQL,
+];

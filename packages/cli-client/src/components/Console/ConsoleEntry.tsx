@@ -1,20 +1,17 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
-import { SupportedLanguage } from "@/lib/constants";
-import { useStore } from "@nanostores/react";
-import { codeStore } from "@/stores/code";
+import { useEffect, useRef, useState } from "react";
+import { CellLanguage } from "@/lib/constants";
 
 type Props = {
-	lang: SupportedLanguage;
+	lang: CellLanguage;
 };
 
-const prefixLookup: Record<SupportedLanguage, string> = {
+const prefixLookup: Record<CellLanguage, string> = {
 	PYTHON: "py>",
 	R: "r>",
 	SQL: "sql>",
 };
 
 export default function ConsoleEntry({ lang }: Props) {
-	const { RPrompt } = useStore(codeStore);
 	const [input, setInput] = useState("");
 	const ref = useRef<HTMLTextAreaElement>(null);
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -48,7 +45,6 @@ export default function ConsoleEntry({ lang }: Props) {
 
 	return (
 		<section className="text-sm font-mono text-white">
-			{lang === "R" && <span className="whitespace-pre">{RPrompt.trim()}</span>}
 			<div className="flex gap-2 pr-16 mt-8">
 				<span className=" text-blue-600">{prefixLookup[lang]}</span>
 

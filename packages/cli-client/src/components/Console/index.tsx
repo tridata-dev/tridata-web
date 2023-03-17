@@ -2,6 +2,7 @@ import Chevron from "../icons/Chevron";
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Console from "./Console";
+import CommandLineIcon from "../icons/CommandLine";
 
 export default function () {
 	const [open, setOpen] = useState(false);
@@ -11,10 +12,10 @@ export default function () {
 	};
 
 	return (
-		<section id="console" className="fixed right-2 bottom-4 font-mono">
+		<section id="console" className="fixed right-4 bottom-4 font-mono">
 			<button className="flex items-center " onClick={toggleConsole}>
-				<Chevron />
-				<h3 className="">Console</h3>
+				<CommandLineIcon />
+				<h3 className="ml-1">Console</h3>
 			</button>
 
 			<Transition.Root show={open} as={Fragment}>

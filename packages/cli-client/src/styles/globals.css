@@ -8,3 +8,34 @@
 html {
     font-family: var(--font-sans-serif)
 }
+
+.cell-pending::before,
+.cell-pending::after {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    width: calc(100% + 4px);
+    height: calc(95%);
+    top: 2px;
+    left: -2px;
+    border-radius: 4px;
+    background: radial-gradient(at center bottom, rgb(253, 230, 138), rgb(124, 58, 237), rgb(12, 74, 110));
+    background-size: 300%;
+    animation: border 15s linear infinite;
+}
+
+.cell-pending::after {
+    filter: blur(5px);
+}
+
+@keyframes border {
+
+    0%,
+    100% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 300%;
+    }
+}

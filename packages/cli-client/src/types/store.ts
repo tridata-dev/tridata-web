@@ -1,4 +1,4 @@
-import { SupportedLanguage } from "@/lib/constants";
+import { CellLanguage } from "@/lib/constants";
 import type { WebR } from "@r-wasm/webr";
 import type { PyodideInterface } from "pyodide";
 import type { Database } from "sql.js";
@@ -6,6 +6,9 @@ import type { Database } from "sql.js";
 export type REngine = WebR;
 export type PYTHONEngine = PyodideInterface;
 export type SQLEngine = Database;
+
+export type CellResult = RCellResult;
+
 export type RCellResultType = "stdout" | "stderr" | "canvasExec" | "prompt";
 export type RCellResult = {
 	type: RCellResultType;
@@ -13,12 +16,12 @@ export type RCellResult = {
 };
 
 export type Cell = {
-	lang: SupportedLanguage;
+	lang: CellLanguage;
 	code: string;
 	results: RCellResult[];
 	pending: boolean;
 	success: boolean | undefined;
-	error: string | undefined;
+	error: boolean | undefined;
 };
 
 export type CodeStore = {
