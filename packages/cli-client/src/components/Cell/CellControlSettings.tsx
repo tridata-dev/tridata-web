@@ -3,14 +3,11 @@ import { Menu, Transition } from "@headlessui/react";
 import EllipsisIcon from "../icons/Ellipsis";
 import { cn } from "@/lib/utils";
 import BoltIcon from "../icons/Bolt";
-import { useReduxDispatch } from "@/redux/store";
-import { runCode } from "@/redux/thunks/cells";
-import { TridataError } from "@tridata/core";
-import { toast } from "sonner";
 import TrashIcon from "../icons/Trash";
 import { useReduxActions } from "@/hooks/redux";
 import CollapseIcon from "../icons/Collapse";
 import { useRunCell } from "@/hooks/run-cell";
+import { useReduxSelector } from "@/redux/store";
 
 type Props = {
 	id: string;
@@ -18,7 +15,9 @@ type Props = {
 
 export default function CellControlSettings({ id }: Props) {
 	const { deleteCell, clearResults } = useReduxActions();
-	const runCell = useRunCell();
+	const cells = useReduxSelector((state) => state.cells.cells);
+	const cell = cells[id];
+	const runCell = useRunCell({ id, lang: cell.lang });
 
 	const menuItems = [];
 
@@ -49,7 +48,7 @@ export default function CellControlSettings({ id }: Props) {
 										active ? "bg-gray-100 text-gray-900" : "text-gray-700",
 										" px-2 py-2 text-sm w-full flex items-center justify-start gap-2",
 									)}
-									onClick={() => runCell({ id })}
+									onClick={() => runCell()}
 								>
 									<BoltIcon className="w-4 h-4" />
 									Run

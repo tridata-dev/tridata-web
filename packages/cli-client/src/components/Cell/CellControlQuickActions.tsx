@@ -47,15 +47,15 @@ const Add = ({ id }: Props) => {
 };
 
 const Run = ({ id }: { id: string }) => {
-	const runCell = useRunCell();
 	const { cells } = useReduxSelector((store) => store.cells);
 	const cell = cells[id];
+	const runCell = useRunCell({ id, lang: cell.lang });
 
 	return cell.pending ? (
 		<SpinnerIcon className="w-4 h-4" />
 	) : (
 		<button
-			onClick={() => runCell({ id })}
+			onClick={() => runCell()}
 			className="rounded-md hover:bg-gray-200 px-1"
 		>
 			<ForwardIcon />

@@ -5,6 +5,7 @@ export default defineConfig({
 		emptyOutDir: true,
 		outDir: "dist",
 		sourcemap: true,
+		target: "esnext",
 		lib: {
 			entry: {
 				index: "./src/index.ts",
@@ -12,7 +13,7 @@ export default defineConfig({
 				python: "./src/python.ts",
 				sql: "./src/sql.ts",
 			},
-			formats: ["es", "cjs"],
+			formats: ["es"],
 		},
 	},
 });

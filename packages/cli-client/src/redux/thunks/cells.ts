@@ -1,9 +1,12 @@
 import { CellLanguage } from "@/lib/constants";
 import {
 	CellResult,
+	Engine,
+	EngineConfig,
 	RCellResult,
 	RCellResultType,
 	REngine,
+	SqlEngine,
 } from "@/types/store";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../store";
@@ -11,22 +14,11 @@ import { TridataError, TridataErrorName } from "@tridata/core";
 
 export const runCode = createAsyncThunk<
 	CellResult[],
-	{ id: string },
+	{ id: string; engine: Engine },
 	{ state: RootState; rejectValue: TridataError }
->("cells/runCode", async ({ id }, { getState, rejectWithValue }) => {
-	const { cells } = getState();
-	const { code, lang } = cells.cells[id];
-	const engine = cells.engines[lang];
-	if (!engine) {
-		const errorName = TridataErrorName.WEBR_NOT_FOUND;
-		return rejectWithValue(
-			new TridataError({
-				name: errorName,
-				message:
-					"The R engine is not initialized or has lost connection, please load again",
-			}),
-		);
-	}
+>("cells/runCode", async ({ id, engine }, { getState, rejectWithValue }) => {
+	const { cells } = getState().cells;
+	const { lang, code } = cells[id];
 
 	if (lang === CellLanguage.R) {
 		const rEngine = engine as REngine;
@@ -52,6 +44,11 @@ export const runCode = createAsyncThunk<
 			}
 		}
 		return results;
+	}
+
+	if (lang === CellLanguage.SQL) {
+		const sqlEngine = engine as SqlEngine;
+		console.log(sqlEngine.exec(code));
 	}
 
 	return [];

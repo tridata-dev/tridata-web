@@ -4,8 +4,9 @@ import type { PyodideInterface } from "pyodide";
 import type { Database } from "sql.js";
 
 export type REngine = WebR;
-export type PYTHONEngine = PyodideInterface;
-export type SQLEngine = Database;
+export type PythonEngine = PyodideInterface;
+export type SqlEngine = Database;
+export type Engine = REngine | PythonEngine | SqlEngine;
 
 export type CellResult = RCellResult;
 
@@ -24,11 +25,4 @@ export type Cell = {
 	error: boolean | undefined;
 };
 
-export type CodeStore = {
-	REngine: REngine | null;
-	RPrompt: string;
-	PYTHONEngine: PYTHONEngine | null;
-	SQLEngine: SQLEngine | null;
-	cells: Map<string, Cell>;
-	orders: string[];
-};
+export type EngineConfig = { lang: CellLanguage; engine: Engine };

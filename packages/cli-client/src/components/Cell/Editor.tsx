@@ -20,7 +20,7 @@ const SelectLanguage = ({ id, lang }: { id: string; lang: CellLanguage }) => {
 	return (
 		<Menu
 			as="div"
-			className="inline-block text-left absolute right-[1%] top-[5%] bg-indigo-100 hover:bg-indigo-200 rounded-md font-mono"
+			className="inline-block text-left absolute right-[5px] top-[5px] bg-indigo-100 hover:bg-indigo-200 rounded-md font-mono"
 		>
 			<div>
 				<Menu.Button className="inline-flex w-full justify-center text-xs gap-x-0.5 rounded-md px-2 py-1 text-gray-900 shadow-sm ">
@@ -68,6 +68,7 @@ const SelectLanguage = ({ id, lang }: { id: string; lang: CellLanguage }) => {
 const editorBaseTheme = EditorView.baseTheme({
 	"&": {
 		padding: "5px",
+		borderRadius: "5px",
 	},
 	".cm-content": {
 		fontFamily: "Fira Code, monospace",
@@ -124,7 +125,7 @@ export default function Editor({ id, cell }: Props) {
 		<div className="editor-wrapper relative">
 			<div
 				ref={editor}
-				className={cn("relative", {
+				className={cn({
 					"cell-pending": cell.pending,
 					"border-2 border-green-400": cell.success,
 					"border-2 border-red-700": cell.error,

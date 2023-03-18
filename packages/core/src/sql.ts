@@ -1,3 +1,3 @@
 import { parseSQLProxy } from "./sql/parser";
-
-export { parseSQLProxy };
+import { initSqliteEngine } from "./sql/init";
+export { parseSQLProxy, initSqliteEngine };

@@ -1,5 +1,4 @@
-import { SetEnginePayload } from "./../types";
-import { Cell, PYTHONEngine, REngine, SQLEngine } from "@/types/store";
+import { Cell, PythonEngine, REngine, SqlEngine } from "@/types/store";
 import { CellLanguage } from "@/lib/constants";
 import { getInitialCells } from "@/lib/mock";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -7,22 +6,12 @@ import { generateId } from "@/lib/utils";
 import { runCode } from "../thunks/cells";
 
 type CellsState = {
-	engines: {
-		R: REngine | null;
-		PYTHON: PYTHONEngine | null;
-		SQL: SQLEngine | null;
-	};
 	prompts: { [key in CellLanguage]: string };
 	cells: Record<string, Cell>;
 	orders: string[];
 };
 
 const initialState: CellsState = {
-	engines: {
-		R: null,
-		PYTHON: null,
-		SQL: null,
-	},
 	prompts: {
 		R: "",
 		PYTHON: "",
@@ -35,16 +24,6 @@ const cellsSlice = createSlice({
 	name: "cells",
 	initialState,
 	reducers: {
-		setEngine(state, action: PayloadAction<SetEnginePayload>) {
-			const { lang, engine } = action.payload;
-			if (lang === CellLanguage.R) {
-				state.engines[CellLanguage.R] = engine;
-			} else if (lang === CellLanguage.PYTHON) {
-				state.engines[CellLanguage.PYTHON] = engine;
-			} else {
-				state.engines[CellLanguage.SQL] = engine;
-			}
-		},
 		setPrompt(
 			state,
 			action: PayloadAction<{ lang: CellLanguage; prompt: string }>,

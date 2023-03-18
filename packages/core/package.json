@@ -37,11 +37,14 @@
   "author": "Qiushi Yan",
   "license": "ISC",
   "devDependencies": {
+    "@types/sql.js": "^1.4.4",
     "typescript": "^4.9.5",
     "vite": "^4.1.0"
   },
   "dependencies": {
     "@r-wasm/webr": "^0.1.0",
-    "pyodide": "^0.22.1"
+    "@stephen/sql.js": "^1.8.6",
+    "pyodide": "^0.22.1",
+    "sql.js": "^1.8.0"
   }
 }

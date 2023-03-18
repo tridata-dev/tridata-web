@@ -1,4 +1,3 @@
-import Chevron from "../icons/Chevron";
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Console from "./Console";
