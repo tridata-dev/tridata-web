@@ -33,6 +33,7 @@ export default function SQLResult({ result }: Props) {
 			<p>
 				{result.nrow} rows and {result.ncol} columns
 			</p>
+			{/* rome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
 			<div dangerouslySetInnerHTML={{ __html: tableCode }} />
 		</div>
 	);

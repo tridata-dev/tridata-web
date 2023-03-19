@@ -48,6 +48,7 @@ export const runCode = createAsyncThunk<
 	}
 
 	if (lang === CellLanguage.SQL) {
+		console.log("running SQL code", code);
 		const sqlEngine = engine as SqlEngine;
 		const q = await sqlEngine.query(code);
 		const records = q.toArray();
