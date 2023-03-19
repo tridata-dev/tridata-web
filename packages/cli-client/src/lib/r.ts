@@ -1,6 +1,4 @@
-import { REngine } from "@/types/store";
-
-type ResultType = "stdout" | "plot";
+import type { REngine } from "@tridata/core";
 
 type RResult = {
 	type: string;
