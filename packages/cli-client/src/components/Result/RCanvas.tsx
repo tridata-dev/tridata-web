@@ -1,28 +1,36 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type Props = {
 	drawCanvasCode: string;
 };
 
+const drawCanvas = (ctx: CanvasRenderingContext2D, code: string) => {
+	const lines = code.trim().split("\n");
+	lines.forEach((line) => {
+		if (line.trim() === "") return;
+		Function(`this.${line}`).bind(ctx)();
+	});
+};
+
 export default function RCanvas({ drawCanvasCode }: Props) {
-	const ref = useRef<HTMLCanvasElement>(null);
-
-	useEffect(() => {
-		if (ref.current) {
-			const ctx = ref.current.getContext("2d");
-			if (ctx) {
-				ctx.clearRect(0, 0, ref.current.width * 2, ref.current.height * 2);
-				drawCanvasCode
-					.trim()
-					.split("\n")
-					.forEach((statement) => {
-						if (statement.trim() === "") return;
-						Function(`this.${statement}`).bind(ctx)();
-					});
-				ctx.scale(0.5, 0.5);
+	const renderCanvas = useCallback(
+		(canvas: HTMLCanvasElement) => {
+			if (canvas) {
+				const ctx = canvas.getContext("2d");
+				if (ctx) {
+					drawCanvas(ctx, drawCanvasCode);
+				}
 			}
-		}
-	}, [drawCanvasCode]);
+		},
+		[drawCanvasCode],
+	);
 
-	return <canvas ref={ref} width={500} height={500} />;
+	return (
+		<div
+			className="flex flex-center relative"
+			style={{ width: 1000 * 0.5, height: 1000 * 0.5 }}
+		>
+			<canvas ref={renderCanvas} width={1000} height={1000} />
+		</div>
+	);
 }

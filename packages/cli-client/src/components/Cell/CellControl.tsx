@@ -8,7 +8,7 @@ type Props = {
 
 function CellControl({ id }: Props) {
 	return (
-		<div className="w-8 px-1 invisible group-hover:visible flex flex-col items-center sticky top-0 max-h-32">
+		<div className="w-8 px-1 invisible group-hover:visible flex flex-col items-center sticky top-0 max-h-28">
 			<CellControlQuickActions id={id} />
 			<CellControlSettings id={id} />
 		</div>

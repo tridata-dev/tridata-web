@@ -6,17 +6,11 @@ import { generateId } from "@/lib/utils";
 import { runCode } from "../thunks/cells";
 
 type CellsState = {
-	prompts: { [key in CellLanguage]: string };
 	cells: Record<string, Cell>;
 	orders: string[];
 };
 
 const initialState: CellsState = {
-	prompts: {
-		R: "",
-		PYTHON: "",
-		SQL: "",
-	},
 	...getInitialCells(),
 };
 
@@ -24,13 +18,6 @@ const cellsSlice = createSlice({
 	name: "cells",
 	initialState,
 	reducers: {
-		setPrompt(
-			state,
-			action: PayloadAction<{ lang: CellLanguage; prompt: string }>,
-		) {
-			const { lang, prompt } = action.payload;
-			state.prompts[lang] = prompt;
-		},
 		insertCell(
 			state,
 			action: PayloadAction<{ afterId: string; lang?: CellLanguage }>,

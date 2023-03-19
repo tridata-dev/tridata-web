@@ -1,5 +1,5 @@
 import { CellLanguage } from "@/lib/constants";
-import ConsoleEntry from "./ConsoleEntry";
+import Command from "./Command";
 import { useReduxSelector } from "@/redux/store";
 
 type Props = {
@@ -7,13 +7,17 @@ type Props = {
 };
 
 export default function ConsolePane({ lang }: Props) {
-	const { prompts } = useReduxSelector((state) => state.cells);
-	const languagePrompt = prompts[lang];
+	const { commands, orders, prompt } = useReduxSelector(
+		(state) => state.console[lang],
+	);
 
 	return (
 		<section className="console-pane">
-			<pre className="console-prompt text-white text-sm">{languagePrompt}</pre>
-			<ConsoleEntry lang={lang} />
+			<pre className="console-prompt text-white text-sm">{prompt}</pre>
+			{orders.map((id) => {
+				const command = commands[id];
+				return <Command id={id} command={command} lang={lang} key={id} />;
+			})}
 		</section>
 	);
 }

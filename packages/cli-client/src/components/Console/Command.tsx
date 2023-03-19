@@ -1,23 +1,41 @@
 import { useEffect, useRef, useState } from "react";
 import { CellLanguage } from "@/lib/constants";
+import {} from "@/redux/slices/console";
+import { Command as CommandType } from "@/types";
+import { useReduxActions } from "@/hooks/redux";
 
 type Props = {
+	id: string;
+	command: CommandType;
 	lang: CellLanguage;
 };
 
 const prefixLookup: Record<CellLanguage, string> = {
-	PYTHON: "py>",
 	R: "r>",
+	PYTHON: "py>",
 	SQL: "sql>",
 };
 
-export default function ConsoleEntry({ lang }: Props) {
-	const [input, setInput] = useState("");
+export default function Command({ id, lang, command }: Props) {
+	const [input, setInput] = useState(command.code);
+	const { addCommand, updateCommand, clearPreviousCommands } =
+		useReduxActions();
 	const ref = useRef<HTMLTextAreaElement>(null);
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.shiftKey && e.key === "Enter") {
 			e.preventDefault();
 			setInput((prev) => `${prev}\n`);
+		}
+
+		if (e.ctrlKey && e.key === "l") {
+			e.preventDefault();
+			clearPreviousCommands({ id, lang });
+		}
+
+		if (e.key === "Enter") {
+			e.preventDefault();
+			updateCommand({ id, lang, code: input });
+			addCommand({ lang });
 		}
 
 		if (e.key === "Tab") {

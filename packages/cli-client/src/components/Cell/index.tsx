@@ -28,12 +28,14 @@ function Cell({ cell, id }: Props) {
 	}
 
 	return (
-		<section className="cell my-4 group">
-			<div className="flex px-1 py-4 gap-1 relative">
+		<section className="cell group">
+			<div className="flex px-1 py-2 gap-1 relative">
 				<CellControl id={id} />
 				<div className="cell-main flex-1 max-w-2xl">
 					<Editor cell={cell} id={id} />
-					<div className="cell-result my-4">{resultDisplay}</div>
+					{results.length > 0 && (
+						<div className="cell-result my-4">{resultDisplay}</div>
+					)}
 				</div>
 			</div>
 		</section>

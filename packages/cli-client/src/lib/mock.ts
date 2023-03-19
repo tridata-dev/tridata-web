@@ -5,8 +5,8 @@ import SQLQueryCSVCode from "@/assets/sql/query_csv.sql?raw";
 import SQLQueryParquetCode from "@/assets/sql/query_parquet.sql?raw";
 import SQLCreateTableCode from "@/assets/sql/create_table.sql?raw";
 import { generateId } from "./utils";
-import { CellLanguage } from "./constants";
-import { Cell } from "@/types";
+import { CellLanguage, CellLanguages } from "./constants";
+import { Cell, ConsoleLanguageState } from "@/types";
 
 export const getInitialCells = () => {
 	const cells: Record<string, Cell> = {};
@@ -31,4 +31,43 @@ export const getInitialCells = () => {
 	});
 
 	return { cells, orders };
+};
+
+export const getInitialCommands = () => {
+	const ids = Array.from({ length: 3 }, () => generateId());
+	return {
+		PYTHON: {
+			prompt: "",
+			orders: [ids[0]],
+			commands: {
+				[ids[0]]: {
+					code: "",
+					results: [],
+					pending: false,
+				},
+			},
+		},
+		R: {
+			prompt: "",
+			orders: [ids[1]],
+			commands: {
+				[ids[1]]: {
+					code: "",
+					results: [],
+					pending: false,
+				},
+			},
+		},
+		SQL: {
+			prompt: "",
+			orders: [ids[2]],
+			commands: {
+				[ids[2]]: {
+					code: "",
+					results: [],
+					pending: false,
+				},
+			},
+		},
+	};
 };

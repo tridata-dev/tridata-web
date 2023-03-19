@@ -25,3 +25,15 @@ export type Cell = {
 	success: boolean | undefined;
 	error: boolean | undefined;
 };
+
+export type Command = {
+	code: string;
+	results: string[];
+	pending: boolean;
+};
+
+export type ConsoleLanguageState = {
+	prompt: string;
+	orders: string[];
+	commands: Record<string, Command>;
+};
