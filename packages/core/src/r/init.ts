@@ -7,6 +7,7 @@ export const initREngine = async () => {
 			R_ENABLE_JIT: "0",
 			R_DEFAULT_DEVICE: "canvas",
 		},
+		SW_URL: "/webr",
 	});
 
 	await webR.init();
