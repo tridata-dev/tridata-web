@@ -8,3 +8,8 @@ export function cn(...inputs: ClassValue[]) {
 export const generateId = () => {
 	return Math.random().toString(36).substring(2, 15);
 };
+
+export const truncate = (x: number | string, maxLength: number = 20) => {
+	const s = x.toString();
+	return s.length > maxLength ? `${s.slice(0, maxLength)} ...` : s.toString();
+};

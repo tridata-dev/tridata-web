@@ -1,24 +1,25 @@
 import { CellLanguage } from "@/lib/constants";
 import {
-	CellResult,
+	CellResults,
 	Engine,
-	EngineConfig,
 	RCellResult,
 	RCellResultType,
-	REngine,
-	SqlEngine,
-} from "@/types/store";
+	SQLCellResult,
+} from "@/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { TridataError, TridataErrorName } from "@tridata/core";
+import type { REngine } from "@tridata/core";
+import { SqlEngine } from "@tridata/core";
 
 export const runCode = createAsyncThunk<
-	CellResult[],
+	{ data: CellResults; error: boolean },
 	{ id: string; engine: Engine },
 	{ state: RootState; rejectValue: TridataError }
 >("cells/runCode", async ({ id, engine }, { getState, rejectWithValue }) => {
 	const { cells } = getState().cells;
-	const { lang, code } = cells[id];
+	const cell = cells[id];
+	const { lang, code } = cell;
 
 	if (lang === CellLanguage.R) {
 		const rEngine = engine as REngine;
@@ -29,7 +30,6 @@ export const runCode = createAsyncThunk<
 		let currentData = "";
 		let currentType = read.type as RCellResultType;
 		const results: RCellResult[] = [];
-
 		while (currentType !== "prompt") {
 			currentData += read.data + "\n";
 			read = await rEngine.read();
@@ -43,13 +43,44 @@ export const runCode = createAsyncThunk<
 				currentType = read.type as RCellResultType;
 			}
 		}
-		return results;
+		const error = results.some((r) => r.type === "stderr");
+		return { data: results, error };
 	}
 
 	if (lang === CellLanguage.SQL) {
 		const sqlEngine = engine as SqlEngine;
-		console.log(sqlEngine.exec(code));
+		const q = await sqlEngine.query(code);
+		const records = q.toArray();
+		const schema = q.schema.fields.map((f) => ({
+			name: f.name,
+			type: String(f.type),
+		}));
+		const nrow = q.numRows;
+		const ncol = q.numCols;
+		const values: SQLCellResult["values"] = [];
+		const nMax = Math.min(100, nrow);
+		for (let i = 0; i < nMax; i++) {
+			values.push(Object.values(records[i]));
+		}
+		const result: SQLCellResult = {
+			nrow,
+			ncol,
+			schema,
+			values,
+		};
+		return {
+			data: [result],
+			error: false,
+		};
+		// results = qa;
+		// for (const row of qa) {
+		// 	console.log("row", row);
+		// }
+		// console.log("JSON parse", JSON.parse(qs));
 	}
 
-	return [];
+	return {
+		data: [] as CellResults,
+		error: true,
+	};
 });

@@ -1,7 +1,6 @@
 import { useReduxActions } from "@/hooks/redux";
 import { cn } from "@/lib/utils";
 import { useReduxSelector } from "@/redux/store";
-import { Cell } from "@/types/store";
 import { StreamLanguage } from "@codemirror/language";
 import { r } from "@codemirror/legacy-modes/mode/r";
 import { useCodeMirror } from "@uiw/react-codemirror";
@@ -13,6 +12,7 @@ import { CellLanguage, CellLanguages } from "@/lib/constants";
 import ChevronDownIcon from "../icons/ChevronDown";
 import { python } from "@codemirror/lang-python";
 import { sql } from "@codemirror/lang-sql";
+import { Cell } from "@/types";
 
 const SelectLanguage = ({ id, lang }: { id: string; lang: CellLanguage }) => {
 	const { setCellLanguage } = useReduxActions();
@@ -20,10 +20,10 @@ const SelectLanguage = ({ id, lang }: { id: string; lang: CellLanguage }) => {
 	return (
 		<Menu
 			as="div"
-			className="inline-block text-left absolute right-[5px] top-[5px] bg-indigo-100 hover:bg-indigo-200 rounded-md font-mono"
+			className="inline-block absolute right-[5px] top-[5px] bg-indigo-100 hover:bg-indigo-200 rounded-md font-mono"
 		>
 			<div>
-				<Menu.Button className="inline-flex w-full justify-center text-xs gap-x-0.5 rounded-md px-2 py-1 text-gray-900 shadow-sm ">
+				<Menu.Button className="inline-flex w-full justify-center text-xs gap-x-0.5 rounded-md px-2 py-1 text-gray-900 shadow-sm hover:opacity-20">
 					<span>{lang}</span>
 					<ChevronDownIcon
 						className="w-4 h-4 text-gray-400"
@@ -92,7 +92,7 @@ export default function Editor({ id, cell }: Props) {
 	const { code, lang } = cell;
 
 	const extensions = useMemo(() => {
-		const extensions = [editorBaseTheme];
+		const extensions = [editorBaseTheme, EditorView.lineWrapping];
 		if (lang === CellLanguage.R) {
 			extensions.push(StreamLanguage.define(r));
 		} else if (lang === CellLanguage.PYTHON) {
@@ -125,7 +125,7 @@ export default function Editor({ id, cell }: Props) {
 		<div className="editor-wrapper relative">
 			<div
 				ref={editor}
-				className={cn({
+				className={cn("rounded-[5px]", {
 					"cell-pending": cell.pending,
 					"border-2 border-green-400": cell.success,
 					"border-2 border-red-700": cell.error,

@@ -42,9 +42,8 @@
     "vite": "^4.1.0"
   },
   "dependencies": {
+    "@duckdb/duckdb-wasm": "^1.24.0",
     "@r-wasm/webr": "^0.1.0",
-    "@stephen/sql.js": "^1.8.6",
-    "pyodide": "^0.22.1",
-    "sql.js": "^1.8.0"
+    "pyodide": "^0.22.1"
   }
 }

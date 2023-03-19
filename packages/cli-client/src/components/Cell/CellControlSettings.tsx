@@ -22,7 +22,10 @@ export default function CellControlSettings({ id }: Props) {
 	const menuItems = [];
 
 	return (
-		<Menu as="div" className="relative inline-block text-left">
+		<Menu
+			as="div"
+			className="relative inline-block text-left hover:bg-gray-100 rounded"
+		>
 			<div>
 				<Menu.Button className="flex items-center ">
 					<span className="sr-only">Open options</span>

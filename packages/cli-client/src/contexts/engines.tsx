@@ -1,6 +1,6 @@
 import { useReduxActions } from "@/hooks/redux";
 import { CellLanguage } from "@/lib/constants";
-import { PythonEngine, REngine, SqlEngine } from "@/types/store";
+import type { PythonEngine, REngine, SqlEngine } from "@tridata/core";
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
 
@@ -71,10 +71,15 @@ export default function EnginesContextProvider({
 				});
 				break;
 			case CellLanguage.SQL:
-				// dispatch({
-				// 	type: CellLanguage.SQL,
-				// 	payload: payload.engine as SqlEngine,
-				// });
+				const { initDuckDbEngine } = await import("@tridata/core/sql");
+				const engine = await initDuckDbEngine();
+				if (!engine) {
+					return;
+				}
+				dispatch({
+					type: CellLanguage.SQL,
+					payload: engine as SqlEngine,
+				});
 				break;
 		}
 	};

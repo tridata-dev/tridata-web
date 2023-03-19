@@ -1,4 +1,4 @@
-import { Cell, PythonEngine, REngine, SqlEngine } from "@/types/store";
+import { Cell } from "@/types";
 import { CellLanguage } from "@/lib/constants";
 import { getInitialCells } from "@/lib/mock";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -87,13 +87,12 @@ const cellsSlice = createSlice({
 		});
 		builder.addCase(runCode.fulfilled, (state, action) => {
 			const { id } = action.meta.arg;
-			const results = action.payload;
+			const { data, error } = action.payload;
 			const cell = state.cells[id];
-			cell.results = results;
+			cell.results = data;
 			cell.pending = false;
-			const hasError = results.some((result) => result.type === "stderr");
-			cell.success = !hasError;
-			cell.error = hasError;
+			cell.success = !error;
+			cell.error = error;
 		});
 		builder.addCase(runCode.rejected, (state, action) => {
 			const { id } = action.meta.arg;

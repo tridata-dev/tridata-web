@@ -1,4 +1,4 @@
-import type { RCellResult } from "@/types/store";
+import type { RCellResult } from "@/types";
 import { useEffect, useRef } from "react";
 import RCanvas from "./RCanvas";
 
