@@ -1,6 +1,6 @@
 import { CellLanguage } from "@/lib/constants";
 import {
-	CellResults,
+	CodeResults,
 	Engine,
 	RCellResult,
 	RCellResultType,
@@ -15,7 +15,7 @@ import { runR } from "@/lib/r";
 import { runSQL } from "@/lib/sql";
 
 export const runCell = createAsyncThunk<
-	{ data: CellResults; error: boolean },
+	{ data: CodeResults; error: boolean },
 	{ id: string; engine: Engine },
 	{ state: RootState; rejectValue: TridataError }
 >("cells/runCode", async ({ id, engine }, { getState, rejectWithValue }) => {

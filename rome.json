@@ -1,0 +1,12 @@
+{
+    "linter": {
+        "rules": {
+            "performance": {
+                "noDelete": "off"
+            },
+            "security": {
+                "noDangerouslySetInnerHtml": "off"
+            }
+        }
+    }
+}
