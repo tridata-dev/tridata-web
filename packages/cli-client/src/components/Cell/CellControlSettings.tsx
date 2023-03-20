@@ -6,7 +6,7 @@ import BoltIcon from "../icons/Bolt";
 import TrashIcon from "../icons/Trash";
 import { useReduxActions } from "@/hooks/redux";
 import CollapseIcon from "../icons/Collapse";
-import { useRunCell } from "@/hooks/run-cell";
+import { useRunCode } from "@/hooks/run-code";
 import { useReduxSelector } from "@/redux/store";
 
 type Props = {
@@ -17,7 +17,7 @@ export default function CellControlSettings({ id }: Props) {
 	const { deleteCell, clearResults } = useReduxActions();
 	const cells = useReduxSelector((state) => state.cells.cells);
 	const cell = cells[id];
-	const runCell = useRunCell({ id, lang: cell.lang });
+	const runCell = useRunCode({ id, lang: cell.lang });
 
 	const menuItems = [];
 

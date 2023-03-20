@@ -5,8 +5,8 @@ import SQLQueryCSVCode from "@/assets/sql/query_csv.sql?raw";
 import SQLQueryParquetCode from "@/assets/sql/query_parquet.sql?raw";
 import SQLCreateTableCode from "@/assets/sql/create_table.sql?raw";
 import { generateId } from "./utils";
-import { CellLanguage, CellLanguages } from "./constants";
-import { Cell, ConsoleLanguageState } from "@/types";
+import { CellLanguage } from "./constants";
+import { Cell } from "@/types";
 
 export const getInitialCells = () => {
 	const cells: Record<string, Cell> = {};

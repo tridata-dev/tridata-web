@@ -12,8 +12,8 @@ export default function ConsolePane({ lang }: Props) {
 	);
 
 	return (
-		<section className="console-pane">
-			<pre className="console-prompt text-white text-sm">{prompt}</pre>
+		<section className="console-pane text-white text-sm font-mono">
+			<pre className="console-prompt mb-4">{prompt}</pre>
 			{orders.map((id) => {
 				const command = commands[id];
 				return <Command id={id} command={command} lang={lang} key={id} />;

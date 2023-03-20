@@ -3,8 +3,9 @@ import React from "react";
 import CellControl from "./CellControl";
 import Editor from "./Editor";
 import { CellLanguage } from "@/lib/constants";
-import RResult from "../Result/RResult";
-import SQLResult from "../Result/SQLResult";
+import RResult from "../Results/RResult";
+import SQLResult from "../Results/SQLResult";
+import Results from "../Results";
 
 interface Props {
 	cell: CellType;
@@ -13,19 +14,6 @@ interface Props {
 
 function Cell({ cell, id }: Props) {
 	const { results } = cell;
-	let resultDisplay: React.ReactNode;
-	if (cell.lang === CellLanguage.R) {
-		resultDisplay = results.map((result, i) => (
-			<RResult result={result as RCellResult} key={`cell-${id}-result-${i}`} />
-		));
-	} else if (cell.lang === CellLanguage.SQL) {
-		resultDisplay = results.map((result, i) => (
-			<SQLResult
-				result={result as SQLCellResult}
-				key={`cell-${id}-result-${i}`}
-			/>
-		));
-	}
 
 	return (
 		<section className="cell group">
@@ -34,7 +22,8 @@ function Cell({ cell, id }: Props) {
 				<div className="cell-main flex-1 max-w-2xl">
 					<Editor cell={cell} id={id} />
 					{results.length > 0 && (
-						<div className="cell-result my-4">{resultDisplay}</div>
+						// @ts-ignore
+						<Results results={results} lang={cell.lang} variant="cell" />
 					)}
 				</div>
 			</div>

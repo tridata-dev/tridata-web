@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const generateId = () => {
-	return Math.random().toString(36).substring(2, 15);
+	return crypto.randomUUID();
 };
 
 export const truncate = (x: number | string, maxLength: number = 20) => {

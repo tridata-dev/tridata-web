@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { CellLanguages } from "@/lib/constants";
 import ForwardIcon from "../icons/Forward";
-import { useRunCell } from "@/hooks/run-cell";
+import { useRunCode } from "@/hooks/run-code";
 import { useReduxSelector } from "@/redux/store";
 import SpinnerIcon from "../icons/Spinner";
 
@@ -49,7 +49,7 @@ const Add = ({ id }: Props) => {
 const Run = ({ id }: { id: string }) => {
 	const { cells } = useReduxSelector((store) => store.cells);
 	const cell = cells[id];
-	const runCell = useRunCell({ id, lang: cell.lang });
+	const runCell = useRunCode({ id, lang: cell.lang });
 
 	return cell.pending ? (
 		<SpinnerIcon className="w-4 h-4" />

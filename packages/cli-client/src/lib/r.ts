@@ -1,3 +1,4 @@
+import { RCellResult, RCellResultType } from "@/types";
 import type { REngine } from "@tridata/core";
 
 type RResult = {
@@ -5,30 +6,29 @@ type RResult = {
 	data: string;
 };
 
-export const runRWithEngine = async (engine: REngine, code: string) => {
+export const runR = async ({
+	code,
+	engine,
+}: { code: string; engine: REngine }) => {
+	console.log("running R code", code);
 	engine.writeConsole(code + "\n");
 
-	const results: RResult[] = [];
 	let read = await engine.read();
-	let currentResult = "";
-	let currentType = read.type;
+	let currentData = "";
+	let currentType = read.type as RCellResultType;
+	const results: RCellResult[] = [];
 	while (currentType !== "prompt") {
-		currentResult += read.data + "\n";
+		currentData += read.data + "\n";
 		read = await engine.read();
-		if (
-			read.type !== currentType ||
-			(read.data as string).startsWith("clearRect")
-		) {
-			results.push({
+		if (read.type !== currentType || read.data.startsWith("clearRect")) {
+			const result = {
 				type: currentType,
-				data: currentResult,
-			});
-			currentResult = "";
-			currentType = read.type;
+				data: currentData,
+			};
+			results.push(result);
+			currentData = "";
+			currentType = read.type as RCellResultType;
 		}
 	}
-
-	console.log(results);
-
 	return results;
 };

@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { CellLanguage } from "@/lib/constants";
 import {} from "@/redux/slices/console";
-import { Command as CommandType } from "@/types";
+import { Command as CommandType, RCellResult } from "@/types";
 import { useReduxActions } from "@/hooks/redux";
+import { useRunCode } from "@/hooks/run-code";
+import SpinnerIcon from "../icons/Spinner";
+import Results from "../Results";
 
 type Props = {
 	id: string;
@@ -16,10 +19,20 @@ const prefixLookup: Record<CellLanguage, string> = {
 	SQL: "sql>",
 };
 
+const autoCompletePairs: Record<string, string> = {
+	"(": ")",
+	"{": "}",
+	"[": "]",
+	"'": "'",
+	'"': '"',
+	"`": "`",
+} as const;
+
 export default function Command({ id, lang, command }: Props) {
 	const [input, setInput] = useState(command.code);
 	const { addCommand, updateCommand, clearPreviousCommands } =
 		useReduxActions();
+	const runCommand = useRunCode({ id, lang, type: "command" });
 	const ref = useRef<HTMLTextAreaElement>(null);
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.shiftKey && e.key === "Enter") {
@@ -32,15 +45,28 @@ export default function Command({ id, lang, command }: Props) {
 			clearPreviousCommands({ id, lang });
 		}
 
-		if (e.key === "Enter") {
+		if (e.key === "Enter" && !e.shiftKey) {
 			e.preventDefault();
 			updateCommand({ id, lang, code: input });
-			addCommand({ lang });
+			runCommand();
 		}
 
 		if (e.key === "Tab") {
 			e.preventDefault();
 			setInput((prev) => `${prev}\t`);
+		}
+
+		if (e.key in autoCompletePairs) {
+			if (ref.current) {
+				const editor = ref.current;
+				const start = editor.selectionStart;
+				const end = editor.selectionEnd;
+				editor.value = `${editor.value.slice(0, start)}${
+					autoCompletePairs[e.key]
+				}${editor.value.slice(start, editor.value.length)}`;
+				editor.selectionStart = start;
+				editor.selectionEnd = end;
+			}
 		}
 	};
 
@@ -62,9 +88,13 @@ export default function Command({ id, lang, command }: Props) {
 	}, [input]);
 
 	return (
-		<section className="text-sm font-mono text-white">
-			<div className="flex gap-2 pr-16 mt-8">
-				<span className=" text-blue-600">{prefixLookup[lang]}</span>
+		<section className="command">
+			<div className="flex gap-2 pr-16 mt-2">
+				{command.pending ? (
+					<SpinnerIcon className="w-3 h-3" />
+				) : (
+					<span className=" text-blue-600">{prefixLookup[lang]}</span>
+				)}
 
 				<textarea
 					className="flex-1 outline-none bg-black w-full inline-block overflow-hidden resize-none"
@@ -77,6 +107,10 @@ export default function Command({ id, lang, command }: Props) {
 					onKeyDown={handleKeyDown}
 				/>
 			</div>
+			{command.results.length > 0 && (
+				// @ts-ignore
+				<Results results={command.results} lang={lang} variant="command" />
+			)}
 		</section>
 	);
 }

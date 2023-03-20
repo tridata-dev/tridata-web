@@ -3,7 +3,7 @@ import { CellLanguage } from "@/lib/constants";
 import { getInitialCells } from "@/lib/mock";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { generateId } from "@/lib/utils";
-import { runCode } from "../thunks/cells";
+import { runCell } from "../thunks/cells";
 
 type CellsState = {
 	cells: Record<string, Cell>;
@@ -65,14 +65,15 @@ const cellsSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(runCode.pending, (state, action) => {
+		builder.addCase(runCell.pending, (state, action) => {
 			const { id } = action.meta.arg;
 			const cell = state.cells[id];
+			cell.results = [];
 			cell.pending = true;
 			cell.success = undefined;
 			cell.error = undefined;
 		});
-		builder.addCase(runCode.fulfilled, (state, action) => {
+		builder.addCase(runCell.fulfilled, (state, action) => {
 			const { id } = action.meta.arg;
 			const { data, error } = action.payload;
 			const cell = state.cells[id];
@@ -81,7 +82,7 @@ const cellsSlice = createSlice({
 			cell.success = !error;
 			cell.error = error;
 		});
-		builder.addCase(runCode.rejected, (state, action) => {
+		builder.addCase(runCell.rejected, (state, action) => {
 			const { id } = action.meta.arg;
 			const cell = state.cells[id];
 			cell.pending = false;
@@ -91,5 +92,5 @@ const cellsSlice = createSlice({
 	},
 });
 
-export const cellsActions = { ...cellsSlice.actions, runCode };
+export const cellsActions = { ...cellsSlice.actions, runCell };
 export const cellsReducer = cellsSlice.reducer;

@@ -3,6 +3,7 @@ import { getInitialCommands } from "@/lib/mock";
 import { generateId } from "@/lib/utils";
 import { ConsoleLanguageState } from "@/types";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { runCommand } from "@/redux/thunks/console";
 
 type ConsoleState = {
 	R: ConsoleLanguageState;
@@ -52,7 +53,27 @@ const consoleSlice = createSlice({
 			orders.splice(0, index);
 		},
 	},
+	extraReducers: (builder) => {
+		builder.addCase(runCommand.pending, (state, action) => {
+			const { lang, id } = action.meta.arg;
+			state[lang].commands[id].pending = true;
+		});
+
+		builder.addCase(runCommand.fulfilled, (state, action) => {
+			const { lang, id } = action.meta.arg;
+			const results = action.payload;
+			state[lang].commands[id].results = results;
+			state[lang].commands[id].pending = false;
+			const newId = generateId();
+			state[lang].orders.push(newId);
+			state[lang].commands[newId] = {
+				code: "",
+				results: [],
+				pending: false,
+			};
+		});
+	},
 });
 
-export const consoleActions = consoleSlice.actions;
+export const consoleActions = { ...consoleSlice.actions, runCommand };
 export const consoleReducer = consoleSlice.reducer;

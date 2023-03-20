@@ -19,11 +19,9 @@ importers:
       '@radix-ui/react-tabs': ^1.0.3
       '@radix-ui/react-tooltip': ^1.0.5
       '@reduxjs/toolkit': ^1.9.3
-      '@tanstack/react-query': ^4.26.1
       '@tridata/core': workspace:^0.0.1
       '@types/react': ^18.0.27
       '@types/react-dom': ^18.0.10
-      '@types/sql.js': ^1.4.4
       '@uiw/codemirror-theme-bbedit': ^4.19.9
       '@uiw/react-codemirror': ^4.19.9
       '@vitejs/plugin-react': ^3.1.0
@@ -57,7 +55,6 @@ importers:
       '@radix-ui/react-tabs': 1.0.3_biqbaboplfbrettd7655fr4n2y
       '@radix-ui/react-tooltip': 1.0.5_zula6vjvt3wdocc4mwcxqa6nzi
       '@reduxjs/toolkit': 1.9.3_k4ae6lp43ej6mezo3ztvx6pykq
-      '@tanstack/react-query': 4.26.1_biqbaboplfbrettd7655fr4n2y
       '@tridata/core': link:../core
       '@uiw/codemirror-theme-bbedit': 4.19.9_24gumbi44ebqnfvtgijke3b3zq
       '@uiw/react-codemirror': 4.19.9_yuoa52bn5lac6xb6tzftvid7im
@@ -76,7 +73,6 @@ importers:
     devDependencies:
       '@types/react': 18.0.28
       '@types/react-dom': 18.0.11
-      '@types/sql.js': 1.4.4
       '@vitejs/plugin-react': 3.1.0_vite@4.1.4
       autoprefixer: 10.4.14_postcss@8.4.21
       postcss: 8.4.21
