@@ -56,7 +56,7 @@ const Run = ({ id }: { id: string }) => {
 	) : (
 		<button
 			onClick={() => runCell()}
-			className="rounded-md hover:bg-gray-200 px-1"
+			className="rounded-md hover:bg-gray-100 px-1"
 		>
 			<ForwardIcon />
 		</button>
@@ -69,9 +69,11 @@ type Props = {
 
 export default function CellControlQuickActions({ id }: Props) {
 	return (
-		<div className="flex flex-col items-center">
-			<Run id={id} />
-			<Add id={id} />
+		<div className="w-8 px-1 invisible group-hover:visible flex flex-col items-center sticky top-0 h-8">
+			<div className=" flex flex-col items-center">
+				<Run id={id} />
+				<Add id={id} />
+			</div>
 		</div>
 	);
 }

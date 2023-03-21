@@ -55,6 +55,9 @@ const cellsSlice = createSlice({
 			const { id, lang } = action.payload;
 			const cell = state.cells[id];
 			cell.lang = lang;
+			cell.results = [];
+			cell.success = undefined;
+			cell.error = undefined;
 		},
 		clearResults(state, action: PayloadAction<{ id: string }>) {
 			const { id } = action.payload;

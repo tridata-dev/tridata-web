@@ -11,7 +11,7 @@ export default function () {
 	};
 
 	return (
-		<section id="console" className="fixed right-4 bottom-4 font-mono">
+		<section id="console" className="fixed right-4 bottom-10 font-mono">
 			<button className="flex items-center " onClick={toggleConsole}>
 				<CommandLineIcon />
 				<h3 className="ml-1">Console</h3>

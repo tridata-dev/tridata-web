@@ -7,12 +7,13 @@ import { Button } from "./components/ui/button";
 import { CellLanguage } from "./lib/constants";
 import { useSetEngine } from "./hooks/engines";
 import { useEffect } from "react";
+import SiteFooter from "./components/SiteFooter";
 
 function App() {
 	const setEngine = useSetEngine();
 
 	return (
-		<section className="main">
+		<section className="main relative">
 			<SiteHeader />
 			<section className="flex gap-2">
 				<Button onClick={() => setEngine({ lang: CellLanguage.R })}>
@@ -25,6 +26,7 @@ function App() {
 			</section>
 			<CellList />
 			<Console />
+			<SiteFooter />
 		</section>
 	);
 }

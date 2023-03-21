@@ -11,7 +11,6 @@ const drawCanvas = (ctx: CanvasRenderingContext2D, code: string) => {
 	const lines = code.trim().split("\n");
 	lines.forEach((line) => {
 		if (line.trim() === "") return;
-		console.log(line);
 		Function(`this.${line}`).bind(ctx)();
 	});
 };

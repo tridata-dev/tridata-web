@@ -40,3 +40,62 @@ html {
         background-position: 300%;
     }
 }
+
+.footer-shimmer {
+    background-color: #e0e7ff;
+}
+
+.footer-shimmer::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(to right, rgb(100, 116, 139), rgb(254, 249, 195));
+    animation: shimmer 3s ease-out infinite;
+    content: "";
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(0%);
+        opacity: 0;
+    }
+}
+
+.bouncing-loader {
+    display: flex;
+    justify-content: center;
+}
+
+.bouncing-loader>div {
+    width: 10px;
+    height: 10px;
+    margin: 3px 6px;
+    border-radius: 50%;
+    background-color: #818cf8;
+    opacity: 1;
+    animation: bouncing-loader 2s infinite alternate;
+}
+
+@keyframes bouncing-loader {
+    25% {
+        opacity: 0.2;
+        transform: translateY(-4px);
+    }
+
+    75% {
+        opacity: 0.2;
+        transform: translateY(4px);
+    }
+
+}
+
+.bouncing-loader>div:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.bouncing-loader>div:nth-child(3) {
+    animation-delay: 0.4s;
+}

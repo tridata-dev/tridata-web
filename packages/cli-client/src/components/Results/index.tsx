@@ -24,16 +24,16 @@ export default function Results({ results, lang, variant }: Props) {
 	);
 
 	if (lang === CellLanguage.R) {
-		return results.map((result) => (
-			<div className={classes}>
+		return results.map((result, i) => (
+			<div className={classes} key={`r-result-${i}`}>
 				<RResult result={result as RCellResult} variant={variant} />
 			</div>
 		));
 	}
 
 	if (lang === CellLanguage.SQL) {
-		return results.map((result) => (
-			<div className={classes}>
+		return results.map((result, i) => (
+			<div className={classes} key={`sql-result-${i}`}>
 				<SQLResult result={result as SQLCellResult} variant={variant} />
 			</div>
 		));
