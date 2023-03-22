@@ -1,11 +1,6 @@
 import { RCellResult, RCellResultType } from "@/types";
 import type { REngine } from "@tridata/core";
 
-type RResult = {
-	type: string;
-	data: string;
-};
-
 export const runR = async ({
 	code,
 	engine,

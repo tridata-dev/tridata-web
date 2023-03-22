@@ -7,6 +7,6 @@ export const useTasks = () => {
 };
 
 export const useTaskActions = () => {
-	const addTask = useContext(TaskActionsContext);
-	return addTask;
+	const actions = useContext(TaskActionsContext);
+	return actions;
 };

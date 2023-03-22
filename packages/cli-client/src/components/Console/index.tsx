@@ -2,8 +2,9 @@ import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Console from "./Console";
 import CommandLineIcon from "../icons/CommandLine";
+import React from "react";
 
-export default function () {
+function ConsoleHome() {
 	const [open, setOpen] = useState(false);
 
 	const toggleConsole = () => {
@@ -46,3 +47,5 @@ export default function () {
 		</section>
 	);
 }
+
+export default React.memo(ConsoleHome);

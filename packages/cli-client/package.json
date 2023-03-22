@@ -27,6 +27,7 @@
     "@uiw/react-codemirror": "^4.19.9",
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
+    "comlink": "^4.4.1",
     "immer": "^9.0.19",
     "lucide-react": "^0.125.0",
     "radix-ui": "^1.0.1",

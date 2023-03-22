@@ -28,6 +28,7 @@ importers:
       autoprefixer: ^10.4.14
       class-variance-authority: ^0.4.0
       clsx: ^1.2.1
+      comlink: ^4.4.1
       immer: ^9.0.19
       lucide-react: ^0.125.0
       postcss: ^8.4.21
@@ -60,6 +61,7 @@ importers:
       '@uiw/react-codemirror': 4.19.9_yuoa52bn5lac6xb6tzftvid7im
       class-variance-authority: 0.4.0_typescript@4.9.5
       clsx: 1.2.1
+      comlink: 4.4.1
       immer: 9.0.19
       lucide-react: 0.125.0_react@18.2.0
       radix-ui: 1.0.1_zula6vjvt3wdocc4mwcxqa6nzi
@@ -2192,6 +2194,10 @@ packages:
 
   /color-name/1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+
+  /comlink/4.4.1:
+    resolution: {integrity: sha512-+1dlx0aY5Jo1vHy/tSsIGpSkN4tS9rZSW8FIhG0JH/crs9wwweswIo/POr451r7bZww3hFbPAKnTpimzL/mm4Q==}
+    dev: false
 
   /command-line-args/5.2.1:
     resolution: {integrity: sha512-H4UfQhZyakIjC74I9d34fGYDwk3XpSr17QhEd0Q3I9Xq1CETHo4Hcuo87WyWHpAF1aSLjLRf5lD9ZGX2qStUvg==}

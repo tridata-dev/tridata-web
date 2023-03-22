@@ -23,7 +23,7 @@ export const getInitialCells = () => {
 		cells[orders[i]] = {
 			code: code.trim(),
 			lang: i >= 3 ? CellLanguage.SQL : CellLanguage.R,
-			results: [],
+			results: undefined,
 			pending: false,
 			success: undefined,
 			error: undefined,

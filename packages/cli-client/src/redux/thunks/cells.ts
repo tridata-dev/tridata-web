@@ -1,18 +1,13 @@
 import { CellLanguage } from "@/lib/constants";
-import {
-	CodeResults,
-	Engine,
-	RCellResult,
-	RCellResultType,
-	SQLCellResult,
-} from "@/types";
+import { CodeResults, Engine } from "@/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { TridataError, TridataErrorName } from "@tridata/core";
+import { PythonEngine, TridataError } from "@tridata/core";
 import type { REngine } from "@tridata/core";
 import { SqlEngine } from "@tridata/core";
 import { runR } from "@/lib/r";
 import { runSQL } from "@/lib/sql";
+import { runPython } from "@/lib/python";
 
 export const runCell = createAsyncThunk<
 	{ data: CodeResults; error: boolean },
@@ -29,11 +24,19 @@ export const runCell = createAsyncThunk<
 		return { data: results, error };
 	}
 
+	if (lang === CellLanguage.PYTHON) {
+		const result = await runPython({ code, engine: engine as PythonEngine });
+		return {
+			data: result,
+			error: result.type === "stderr",
+		};
+	}
+
 	if (lang === CellLanguage.SQL) {
 		try {
 			const result = await runSQL({ code, engine: engine as SqlEngine });
 			return {
-				data: [result],
+				data: result,
 				error: false,
 			};
 		} catch {

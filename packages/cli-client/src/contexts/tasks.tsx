@@ -6,6 +6,11 @@ export enum TaskType {
 	R_RUN = "Running R",
 	PYTHON_RUN = "Running Python",
 	SQL_RUN = "Running SQL",
+	R_INIT = "Initting R Engine",
+	PYTHON_INIT = "Initting Python Engine",
+	SQL_INIT = "Initting SQL Engine",
+	R_INSTALL = "Installing R Packages",
+	PYTHON_INSTALL = "Installing Python Packages",
 }
 
 type Task = {
@@ -13,12 +18,17 @@ type Task = {
 	duration: number;
 	pending: boolean;
 	type: TaskType;
+	message?: string;
 };
 type TasksContextType = {
 	tasks: Task[];
 };
 type TaskActionsContextType = {
-	addTask: (type: TaskType) => string;
+	addTask: ({
+		type,
+		timerStart,
+		message,
+	}: { type: TaskType; timerStart?: number; message?: string }) => string;
 	removeTask: (id: string) => void;
 };
 
@@ -34,31 +44,45 @@ export default function TasksContextProvider({
 }: { children: React.ReactNode }) {
 	const [tasks, setTasks] = useImmer<Task[]>([]);
 
-	const addTask = useCallback((type: TaskType) => {
-		const id = generateId();
-		setTasks((draft) => {
-			draft.unshift({
-				id,
-				type,
-				duration: 1,
-				pending: draft.length === 0,
+	const addTask = useCallback<TaskActionsContextType["addTask"]>(
+		({ type, timerStart = 0, message }) => {
+			const id = generateId();
+			setTasks((draft) => {
+				// init tasks should only be run once
+				if (
+					type === TaskType.R_INIT ||
+					type === TaskType.PYTHON_INIT ||
+					type === TaskType.SQL_INIT
+				) {
+					if (draft.findIndex((task) => task.type === type) !== -1) {
+						return;
+					}
+				}
+				draft.unshift({
+					id,
+					type,
+					duration: timerStart,
+					pending: draft.length === 0,
+					message,
+				});
 			});
-		});
-		return id;
-	}, []);
+			return id;
+		},
+		[],
+	);
 
-	const removeTask = useCallback((id: string) => {
+	const removeTask = useCallback<TaskActionsContextType["removeTask"]>((id) => {
 		setTasks((draft) => {
 			const index = draft.findIndex((task) => task.id === id);
-			const oldTaskType = draft[index].type;
 			if (index !== -1) {
+				const oldTaskType = draft[index].type;
 				draft.splice(index, 1);
-			}
-			if (draft.length > 0) {
-				for (let i = draft.length - 1; i >= 0; i--) {
-					if (draft[i].type === oldTaskType) {
-						draft[i].pending = true;
-						break;
+				if (draft.length > 0) {
+					for (let i = draft.length - 1; i >= 0; i--) {
+						if (draft[i].type === oldTaskType) {
+							draft[i].pending = true;
+							break;
+						}
 					}
 				}
 			}

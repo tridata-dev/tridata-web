@@ -86,7 +86,9 @@ type Props = {
 
 export default function Editor({ id, cell }: Props) {
 	const { setCellCode } = useReduxActions();
-	const { theme, lineNumbers } = useReduxSelector((store) => store.editor);
+	const { theme, lineNumbers } = useReduxSelector(
+		(state) => state.settings.editor,
+	);
 	const editor = useRef<HTMLInputElement>(null);
 
 	const { code, lang } = cell;
@@ -106,10 +108,10 @@ export default function Editor({ id, cell }: Props) {
 
 	const { setContainer } = useCodeMirror({
 		container: editor.current,
-		extensions,
-		value: code,
-		theme,
 		onChange: (code) => setCellCode({ id, code }),
+		value: code,
+		extensions,
+		theme,
 		basicSetup: {
 			lineNumbers,
 		},

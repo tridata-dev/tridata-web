@@ -1,6 +1,7 @@
 import { CellLanguage } from "@/lib/constants";
 import type {
 	CodeResults,
+	PythonCellResult,
 	RCellResult,
 	ResultVariant,
 	SQLCellResult,
@@ -8,6 +9,7 @@ import type {
 import RResult from "./RResult";
 import SQLResult from "./SQLResult";
 import { cn } from "@/lib/utils";
+import PythonResult from "./PythonResult";
 
 type Props = {
 	results: CodeResults;
@@ -24,19 +26,27 @@ export default function Results({ results, lang, variant }: Props) {
 	);
 
 	if (lang === CellLanguage.R) {
-		return results.map((result, i) => (
+		return (results as RCellResult[]).map((result, i) => (
 			<div className={classes} key={`r-result-${i}`}>
-				<RResult result={result as RCellResult} variant={variant} />
+				<RResult result={result} variant={variant} />
 			</div>
 		));
 	}
 
-	if (lang === CellLanguage.SQL) {
-		return results.map((result, i) => (
-			<div className={classes} key={`sql-result-${i}`}>
-				<SQLResult result={result as SQLCellResult} variant={variant} />
+	if (lang === CellLanguage.PYTHON) {
+		return (
+			<div className={classes}>
+				<PythonResult result={results as PythonCellResult} variant={variant} />
 			</div>
-		));
+		);
+	}
+
+	if (lang === CellLanguage.SQL) {
+		return (
+			<div className={classes}>
+				<SQLResult result={results as SQLCellResult} variant={variant} />
+			</div>
+		);
 	}
 
 	return null;

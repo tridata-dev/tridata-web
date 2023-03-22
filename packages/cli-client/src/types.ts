@@ -1,8 +1,7 @@
 import { CellLanguage } from "@/lib/constants";
-import type { REngine, PythonEngine, SqlEngine } from "@tridata/core";
+import type { REngine, SqlEngine, PythonEngine } from "@tridata/core";
 
 export type Engine = REngine | PythonEngine | SqlEngine;
-export type CodeResults = RCellResult[] | SQLCellResult[];
 
 export type ResultVariant = "cell" | "command";
 
@@ -19,10 +18,17 @@ export type SQLCellResult = {
 	values: Array<string | number>[];
 };
 
+export type PythonCellResultType = "stdout" | "stderr";
+export type PythonCellResult = {
+	type: PythonCellResultType;
+	data: string;
+};
+
+export type CodeResults = RCellResult[] | SQLCellResult | PythonCellResult;
 export type Cell = {
 	lang: CellLanguage;
 	code: string;
-	results: CodeResults;
+	results: CodeResults | undefined;
 	pending: boolean;
 	success: boolean | undefined;
 	error: boolean | undefined;

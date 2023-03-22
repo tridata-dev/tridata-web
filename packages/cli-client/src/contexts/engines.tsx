@@ -1,8 +1,12 @@
 import { useReduxActions } from "@/hooks/redux";
+import { useTaskActions } from "@/hooks/tasks";
 import { CellLanguage } from "@/lib/constants";
 import type { PythonEngine, REngine, SqlEngine } from "@tridata/core";
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
+import { TaskType } from "./tasks";
+import { sleep } from "@/lib/utils";
+import { useReduxSelector } from "@/redux/store";
 
 type ActionsType =
 	| { type: CellLanguage.R; payload: REngine }
@@ -13,7 +17,10 @@ type SetEnginePayload =
 	| { lang: CellLanguage.PYTHON }
 	| { lang: CellLanguage.SQL };
 
-type SetEngineContextType = (payload: SetEnginePayload) => void;
+type SetEngineContextType = {
+	setEngine: (payload: SetEnginePayload) => void;
+	setEngineDispatch: React.Dispatch<ActionsType>;
+};
 
 type EnginesContextType = {
 	R: REngine | null;
@@ -26,14 +33,17 @@ export const EnginesContext = createContext<EnginesContextType>(
 );
 
 export const SetEngineContext = createContext<SetEngineContextType>(
-	() => undefined,
+	{} as SetEngineContextType,
 );
 
 export default function EnginesContextProvider({
 	children,
 }: { children: React.ReactNode }) {
 	const { setPrompt } = useReduxActions();
-	const [engines, dispatch] = useImmerReducer<EnginesContextType, ActionsType>(
+	const [engines, setEngineDispatch] = useImmerReducer<
+		EnginesContextType,
+		ActionsType
+	>(
 		(draft, action) => {
 			switch (action.type) {
 				case CellLanguage.R:
@@ -54,38 +64,47 @@ export default function EnginesContextProvider({
 		},
 	);
 
+	const { packages: rPackages } = useReduxSelector((state) => state.settings.R);
+
+	const { addTask, removeTask } = useTaskActions();
+
 	const setEngine = async (payload: SetEnginePayload) => {
 		switch (payload.lang) {
 			case CellLanguage.R:
 				const { initREngine } = await import("@tridata/core/r");
+				const rInitTaskId = addTask({ type: TaskType.R_INIT, timerStart: 0 });
 				const { webR, prompt } = await initREngine();
+				removeTask(rInitTaskId);
 				setPrompt({ lang: CellLanguage.R, prompt: prompt.trim() });
-				dispatch({ type: CellLanguage.R, payload: webR });
-				break;
-			case CellLanguage.PYTHON:
-				const { initPythonEngine } = await import("@tridata/core/python");
-				const pyodide = await initPythonEngine();
-				dispatch({
-					type: CellLanguage.PYTHON,
-					payload: pyodide as PythonEngine,
+				setEngineDispatch({ type: CellLanguage.R, payload: webR });
+				const installRPackagesTaskId = addTask({
+					type: TaskType.R_INSTALL,
+					message: JSON.stringify(rPackages),
 				});
+				await webR.installPackages(rPackages);
+				removeTask(installRPackagesTaskId);
 				break;
 			case CellLanguage.SQL:
 				const { initDuckDbEngine } = await import("@tridata/core/sql");
+				const sqlInitTaskId = addTask({
+					type: TaskType.SQL_INIT,
+					timerStart: 0,
+				});
 				const engine = await initDuckDbEngine();
 				if (!engine) {
 					return;
 				}
-				dispatch({
+				setEngineDispatch({
 					type: CellLanguage.SQL,
 					payload: engine as SqlEngine,
 				});
+				removeTask(sqlInitTaskId);
 				break;
 		}
 	};
 
 	return (
-		<SetEngineContext.Provider value={setEngine}>
+		<SetEngineContext.Provider value={{ setEngine, setEngineDispatch }}>
 			<EnginesContext.Provider value={engines}>
 				{children}
 			</EnginesContext.Provider>

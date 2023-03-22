@@ -29,7 +29,7 @@ const cellsSlice = createSlice({
 			cells[id] = {
 				lang: lang || prevCell.lang,
 				code: "",
-				results: [],
+				results: undefined,
 				pending: false,
 				success: undefined,
 				error: undefined,
@@ -55,14 +55,14 @@ const cellsSlice = createSlice({
 			const { id, lang } = action.payload;
 			const cell = state.cells[id];
 			cell.lang = lang;
-			cell.results = [];
+			cell.results = undefined;
 			cell.success = undefined;
 			cell.error = undefined;
 		},
 		clearResults(state, action: PayloadAction<{ id: string }>) {
 			const { id } = action.payload;
 			const cell = state.cells[id];
-			cell.results = [];
+			cell.results = undefined;
 			cell.success = false;
 			cell.error = false;
 		},
@@ -71,7 +71,7 @@ const cellsSlice = createSlice({
 		builder.addCase(runCell.pending, (state, action) => {
 			const { id } = action.meta.arg;
 			const cell = state.cells[id];
-			cell.results = [];
+			cell.results = undefined;
 			cell.pending = true;
 			cell.success = undefined;
 			cell.error = undefined;

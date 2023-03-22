@@ -1,11 +1,11 @@
-import { cellsActions, consoleActions, editorActions } from "@/redux";
+import { cellsActions, consoleActions, settingsActions } from "@/redux";
 import { bindActionCreators } from "@reduxjs/toolkit";
 
 import { useReduxDispatch } from "@/redux/store";
 
 const actionCreators = {
 	...cellsActions,
-	...editorActions,
+	...settingsActions,
 	...consoleActions,
 };
 

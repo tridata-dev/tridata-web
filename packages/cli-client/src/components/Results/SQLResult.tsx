@@ -40,6 +40,13 @@ const makeTableHTML = (result: SQLCellResult, isCell: boolean) => {
 
 export default function SQLResult({ result, variant }: Props) {
 	const isCell = variant === "cell";
+	const theadClases = cn("p-1 border-b", {
+		"border-dashed border": !isCell,
+	});
+	const trClasses = cn("whitespace-nowrap", {
+		"bg-white hover:bg-gray-100 border-b": isCell,
+	});
+	const tdClasses = cn("p-1", { "border-dashed border": !isCell });
 
 	return (
 		<div className="sql-table">
@@ -50,27 +57,15 @@ export default function SQLResult({ result, variant }: Props) {
 				<thead className={cn({ "bg-gray-100": isCell })}>
 					<tr>
 						{result.schema.map((x) => (
-							<th
-								className={cn("p-1 border-b", {
-									"border-dashed border": !isCell,
-								})}
-							>
-								{truncate(x.name)}
-							</th>
+							<th className={theadClases}>{truncate(x.name)}</th>
 						))}
 					</tr>
 				</thead>
 				<tbody>
 					{result.values.map((row) => (
-						<tr
-							className={cn("whitespace-nowrap", {
-								"bg-white hover:bg-gray-100 border-b": isCell,
-							})}
-						>
+						<tr className={trClasses}>
 							{row.map((x) => (
-								<td className={cn("p-1", { "border-dashed border": !isCell })}>
-									{truncate(x)}
-								</td>
+								<td className={tdClasses}>{truncate(x)}</td>
 							))}
 						</tr>
 					))}

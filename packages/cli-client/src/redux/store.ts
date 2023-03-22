@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { cellsReducer } from "./slices/cells";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { enableMapSet } from "immer";
-import { editorReducer } from "./slices/editor";
+import { settingsReducer } from "./slices/settings";
 import { consoleReducer } from "./slices/console";
 
 enableMapSet();
@@ -10,7 +10,7 @@ enableMapSet();
 export const store = configureStore({
 	reducer: {
 		cells: cellsReducer,
-		editor: editorReducer,
+		settings: settingsReducer,
 		console: consoleReducer,
 	},
 });

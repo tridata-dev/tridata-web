@@ -21,7 +21,7 @@ export default function SiteFooter() {
 									{tasks.map((task, i) => (
 										<li key={task.id}>
 											<div className="flex items-center">
-												{task.type}
+												{`${task.type} ${task.message || ""}`}
 												<span className="ml-2">
 													{task.pending ? `${task.duration}s` : "queued"}
 												</span>

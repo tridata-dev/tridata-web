@@ -1,3 +1,3 @@
 export { cellsActions } from "./slices/cells";
-export { editorActions } from "./slices/editor";
+export { settingsActions } from "./slices/settings";
 export { consoleActions } from "./slices/console";

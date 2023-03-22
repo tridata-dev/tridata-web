@@ -8,6 +8,8 @@ import { useReduxActions } from "@/hooks/redux";
 import CollapseIcon from "../icons/Collapse";
 import { useRunCode } from "@/hooks/run-code";
 import { useReduxSelector } from "@/redux/store";
+import { Copy } from "lucide-react";
+import CopyIcon from "../icons/Copy";
 
 type Props = {
 	id: string;
@@ -19,7 +21,28 @@ export default function CellControlSettings({ id }: Props) {
 	const cell = cells[id];
 	const runCell = useRunCode({ id, lang: cell.lang });
 
-	const menuItems = [];
+	const menuItems = [
+		{ icon: <BoltIcon className="w-4 h-4" />, label: "Run", onClick: runCell },
+		{
+			icon: <CopyIcon className="w-4 h-4" />,
+			label: "Copy",
+			onClick: () => {
+				if (navigator.clipboard) {
+					navigator.clipboard.writeText(cell.code);
+				}
+			},
+		},
+		{
+			icon: <TrashIcon className="w-4 h-4" />,
+			label: "Delete",
+			onClick: () => deleteCell({ id }),
+		},
+		{
+			icon: <CollapseIcon className="w-4 h-4" />,
+			label: "Clear",
+			onClick: () => clearResults({ id }),
+		},
+	];
 
 	return (
 		<div className="sticky top-0 h-full">
@@ -45,48 +68,22 @@ export default function CellControlSettings({ id }: Props) {
 				>
 					<Menu.Items className="absolute left-7 -top-1 z-100  mt-2 w-24 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 						<div className="py-1">
-							<Menu.Item>
-								{({ active }) => (
-									<button
-										className={cn(
-											active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-											" px-2 py-2 text-sm w-full flex items-center justify-start gap-2",
-										)}
-										onClick={() => runCell()}
-									>
-										<BoltIcon className="w-4 h-4" />
-										Run
-									</button>
-								)}
-							</Menu.Item>
-							<Menu.Item>
-								{({ active }) => (
-									<button
-										className={cn(
-											active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-											" px-2 py-2 text-sm w-full flex items-center justify-start gap-2",
-										)}
-										onClick={() => deleteCell({ id })}
-									>
-										<TrashIcon className="w-4 h-4" />
-										Delete
-									</button>
-								)}
-							</Menu.Item>
-							<Menu.Item>
-								{({ active }) => (
-									<button
-										className={cn(
-											active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-											" px-2 py-2 text-sm w-full flex items-center justify-start gap-2",
-										)}
-										onClick={() => clearResults({ id })}
-									>
-										<CollapseIcon className="w-4 h-4" />
-										Clear
-									</button>
-								)}
-							</Menu.Item>
+							{menuItems.map((item) => (
+								<Menu.Item key={item.label}>
+									{({ active }) => (
+										<button
+											className={cn(
+												active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+												" px-2 py-2 text-sm w-full flex items-center justify-start gap-2",
+											)}
+											onClick={item.onClick}
+										>
+											{item.icon}
+											{item.label}
+										</button>
+									)}
+								</Menu.Item>
+							))}
 						</div>
 					</Menu.Items>
 				</Transition>

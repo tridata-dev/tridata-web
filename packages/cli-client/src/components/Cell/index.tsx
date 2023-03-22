@@ -1,10 +1,6 @@
-import { Cell as CellType, RCellResult, SQLCellResult } from "@/types";
+import { Cell as CellType } from "@/types";
 import React from "react";
-import CellControl from "./CellControl";
 import Editor from "./Editor";
-import { CellLanguage } from "@/lib/constants";
-import RResult from "../Results/RResult";
-import SQLResult from "../Results/SQLResult";
 import Results from "../Results";
 import CellControlSettings from "./CellControlSettings";
 import CellControlQuickActions from "./CellControlQuickActions";
@@ -23,10 +19,9 @@ function Cell({ cell, id }: Props) {
 				<CellControlQuickActions id={id} />
 				<div className="cell-main flex-1 max-w-2xl">
 					<Editor cell={cell} id={id} />
-					{results.length > 0 && (
-						// @ts-ignore
-						<Results results={results} lang={cell.lang} variant="cell" />
-					)}
+					{results &&
+					// @ts-ignore
+						<Results results={results} lang={cell.lang} variant="cell" />}
 				</div>
 				<CellControlSettings id={id} />
 			</div>

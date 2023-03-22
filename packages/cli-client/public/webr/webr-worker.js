@@ -441,7 +441,7 @@ var require_XMLHttpRequest = __commonJS({
 });
 
 // webR/compat.ts
-var IN_NODE = typeof process !== "undefined" && process.release && process.release.name === "node" && typeof process.browser === "undefined";
+var IN_NODE = typeof process !== "undefined" && process.release && process.release.name === "node";
 var loadScript;
 if (globalThis.document) {
   loadScript = (url) => new Promise((resolve, reject) => {
@@ -1015,13 +1015,13 @@ var SharedBufferChannelMain = class extends ChannelMain {
       };
       worker.postMessage(msg);
     };
-    if (isCrossOrigin(config.WEBR_URL)) {
+    if (isCrossOrigin(config.baseUrl)) {
       newCrossOriginWorker(
-        `${config.WEBR_URL}webr-worker.js`,
+        `${config.baseUrl}webr-worker.js`,
         (worker) => initWorker(worker)
       );
     } else {
-      const worker = new Worker(`${config.WEBR_URL}webr-worker.js`);
+      const worker = new Worker(`${config.baseUrl}webr-worker.js`);
       initWorker(worker);
     }
     ({ resolve: this.resolve, promise: this.initialised } = promiseHandles());
@@ -1142,26 +1142,28 @@ var ServiceWorkerChannelMain = class extends ChannelMain {
     const initWorker = (worker) => {
       __privateMethod(this, _handleEventsFromWorker2, handleEventsFromWorker_fn2).call(this, worker);
       this.close = () => worker.terminate();
-      __privateMethod(this, _registerServiceWorker, registerServiceWorker_fn).call(this, `${config.SW_URL}webr-serviceworker.js`).then((clientId) => {
-        const msg = {
-          type: "init",
-          data: {
-            config,
-            channelType: ChannelType.ServiceWorker,
-            clientId,
-            location: window.location.href
-          }
-        };
-        worker.postMessage(msg);
-      });
+      __privateMethod(this, _registerServiceWorker, registerServiceWorker_fn).call(this, `${config.serviceWorkerUrl}webr-serviceworker.js`).then(
+        (clientId) => {
+          const msg = {
+            type: "init",
+            data: {
+              config,
+              channelType: ChannelType.ServiceWorker,
+              clientId,
+              location: window.location.href
+            }
+          };
+          worker.postMessage(msg);
+        }
+      );
     };
-    if (isCrossOrigin(config.SW_URL)) {
+    if (isCrossOrigin(config.serviceWorkerUrl)) {
       newCrossOriginWorker(
-        `${config.SW_URL}webr-worker.js`,
+        `${config.serviceWorkerUrl}webr-worker.js`,
         (worker) => initWorker(worker)
       );
     } else {
-      const worker = new Worker(`${config.SW_URL}webr-worker.js`);
+      const worker = new Worker(`${config.serviceWorkerUrl}webr-worker.js`);
       initWorker(worker);
     }
     ({ resolve: this.resolve, promise: this.initialised } = promiseHandles());
@@ -2682,7 +2684,7 @@ function dispatch(msg) {
             break;
           }
           case "installPackage": {
-            evalR(`webr::install("${reqMsg.data.name}", repos="${_config.PKG_URL}")`);
+            evalR(`webr::install("${reqMsg.data.name}", repos="${_config.repoUrl}")`);
             write({
               obj: true,
               payloadType: "raw"
@@ -2921,7 +2923,7 @@ function init(config) {
       initPersistentObjects();
       chan == null ? void 0 : chan.setInterrupt(Module._Rf_onintr);
       Module.setValue(Module._R_Interactive, _config.interactive, "*");
-      evalR(`options(webr_pkg_repos="${_config.PKG_URL}")`);
+      evalR(`options(webr_pkg_repos="${_config.repoUrl}")`);
       chan == null ? void 0 : chan.resolve();
     },
     readConsole: () => {
@@ -2951,7 +2953,7 @@ function init(config) {
       return 0;
     }
   };
-  Module.locateFile = (path) => _config.WEBR_URL + path;
+  Module.locateFile = (path) => _config.baseUrl + path;
   Module.downloadFileContent = downloadFileContent;
   Module.print = (text) => {
     chan == null ? void 0 : chan.write({ type: "stdout", data: text });
@@ -2967,7 +2969,7 @@ function init(config) {
   };
   globalThis.Module = Module;
   setTimeout(() => {
-    const scriptSrc = `${_config.WEBR_URL}R.bin.js`;
+    const scriptSrc = `${_config.baseUrl}R.bin.js`;
     loadScript(scriptSrc);
   });
 }

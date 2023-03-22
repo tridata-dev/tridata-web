@@ -9,6 +9,9 @@ import { sleep } from "@/lib/utils";
 import { useTaskActions } from "./tasks";
 import { TaskType } from "@/contexts/tasks";
 import { cellsActions } from "@/redux";
+import { useContext } from "react";
+import { PythonContext } from "@/contexts/python";
+import { Engine } from "@/types";
 
 const taskTypes = {
 	[CellLanguage.R]: TaskType.R_RUN,
@@ -48,7 +51,7 @@ export const useRunCode = ({
 				// if timeout resolves first
 				// code is still running, show loading indicator
 				const taskType = taskTypes[lang];
-				const id = addTask(taskType);
+				const id = addTask({ type: taskType });
 				await result;
 				removeTask(id);
 			}
