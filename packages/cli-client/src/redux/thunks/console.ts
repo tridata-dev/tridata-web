@@ -33,12 +33,7 @@ export const runCommand = createAsyncThunk<
 			const result = await runPython({ code, engine: engine as PythonEngine });
 			return result;
 		} else {
-			try {
-				const result = await runSQL({ code, engine: engine as SqlEngine });
-				return { type: "stdout", data: result } as SQLCellResult;
-			} catch {
-				return { type: "stderr", data: "SQL Execution error" } as SQLCellResult;
-			}
+			return await runSQL({ code, engine: engine as SqlEngine });
 		}
 	},
 );

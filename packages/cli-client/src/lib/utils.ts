@@ -40,3 +40,10 @@ export function groupBy<T, K extends keyof T>(array: T[], key: K) {
 	});
 	return map;
 }
+
+export const errorToString = (err: unknown) => {
+	if (err instanceof Error) {
+		return err.message;
+	}
+	return err;
+};
