@@ -11,6 +11,8 @@ import ForwardIcon from "../icons/Forward";
 import { useRunCode } from "@/hooks/run-code";
 import { useReduxSelector } from "@/redux/store";
 import SpinnerIcon from "../icons/Spinner";
+import { PlaneIcon } from "lucide-react";
+import PlayIcon from "../icons/Play";
 
 const Add = ({ id }: Props) => {
 	const { insertCell } = useReduxActions();
@@ -58,7 +60,7 @@ const Run = ({ id }: { id: string }) => {
 			onClick={() => runCell()}
 			className="rounded-md hover:bg-gray-100 px-1"
 		>
-			<ForwardIcon />
+			<PlayIcon className="w-5 h-5" />
 		</button>
 	);
 };

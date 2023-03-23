@@ -23,7 +23,7 @@ const initialState: SettingsState = {
 		packages: ["dplyr"],
 	},
 	[CellLanguage.PYTHON]: {
-		packages: ["pandas"],
+		packages: ["pandas", "matplotlib"],
 	},
 };
 

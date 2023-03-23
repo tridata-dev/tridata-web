@@ -7,14 +7,6 @@ type Props = {
 	drawCanvasCode: string;
 };
 
-const drawCanvas = (ctx: CanvasRenderingContext2D, code: string) => {
-	const lines = code.trim().split("\n");
-	lines.forEach((line) => {
-		if (line.trim() === "") return;
-		Function(`this.${line}`).bind(ctx)();
-	});
-};
-
 const canvasWidth = 1000;
 const canvasHeight = 1000;
 
@@ -26,7 +18,7 @@ export default function RCanvas({ drawCanvasCode, variant }: Props) {
 			if (canvas) {
 				const ctx = canvas.getContext("2d");
 				if (ctx && drawCanvasCode !== "") {
-					drawCanvas(ctx, drawCanvasCode);
+					Function(drawCanvasCode).bind(ctx)();
 				}
 			}
 		},

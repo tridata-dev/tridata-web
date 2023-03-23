@@ -30,7 +30,7 @@ const consoleSlice = createSlice({
 			state[lang].orders.push(id);
 			state[lang].commands[id] = {
 				code: "",
-				results: [],
+				results: undefined,
 				pending: false,
 			};
 		},
@@ -68,7 +68,7 @@ const consoleSlice = createSlice({
 			state[lang].orders.push(newId);
 			state[lang].commands[newId] = {
 				code: "",
-				results: [],
+				results: undefined,
 				pending: false,
 			};
 		});

@@ -7,7 +7,7 @@ type PythonError = {
 };
 
 const shortenPythonErrorStack = (text: string) => {
-	return text.replace(/\s*at.+$/gm, "");
+	return text.replace(/^\s*at.+$/gm, "").trim();
 };
 
 export const runPython = async ({

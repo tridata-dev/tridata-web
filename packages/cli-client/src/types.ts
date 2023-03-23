@@ -10,13 +10,19 @@ export type RCellResult = {
 	type: RCellResultType;
 	data: string;
 };
+export type SQLCellResultType = "stdout" | "stderr";
 
-export type SQLCellResult = {
-	nrow: number;
-	ncol: number;
-	schema: { name: string; type: string }[];
-	values: Array<string | number>[];
-};
+export type SQLCellResult =
+	| {
+			type: "stdout";
+			data: {
+				nrow: number;
+				ncol: number;
+				schema: { name: string; type: string }[];
+				values: Array<string | number>[];
+			};
+	  }
+	| { type: "stderr"; data: string };
 
 export type PythonCellResultType = "stdout" | "stderr";
 export type PythonCellResult = {
@@ -36,7 +42,7 @@ export type Cell = {
 
 export type Command = {
 	code: string;
-	results: CodeResults;
+	results: CodeResults | undefined;
 	pending: boolean;
 };
 

@@ -107,7 +107,7 @@ export default function Command({ id, lang, command }: Props) {
 					onKeyDown={handleKeyDown}
 				/>
 			</div>
-			{command.results.length > 0 && (
+			{command.results && (
 				// @ts-ignore
 				<Results results={command.results} lang={lang} variant="command" />
 			)}

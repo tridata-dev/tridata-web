@@ -7,13 +7,13 @@ export const runR = async ({
 }: { code: string; engine: REngine }) => {
 	console.log("running R code", code);
 	engine.writeConsole(code + "\n");
-
 	let read = await engine.read();
 	let currentData = "";
 	let currentType = read.type as RCellResultType;
 	const results: RCellResult[] = [];
 	while (currentType !== "prompt") {
-		currentData += read.data + "\n";
+		currentData +=
+			currentType === "canvasExec" ? `this.${read.data};` : read.data + "\n";
 		read = await engine.read();
 		if (read.type !== currentType || read.data.startsWith("clearRect")) {
 			const result = {
