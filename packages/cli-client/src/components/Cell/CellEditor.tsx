@@ -1,5 +1,5 @@
 import { useReduxActions } from "@/hooks/redux";
-import { cn } from "@/lib/utils";
+import { cn, dismissDropdown } from "@/lib/utils";
 import { useReduxSelector } from "@/redux/store";
 import { useCodeMirror } from "@uiw/react-codemirror";
 import { useEffect, useMemo, useRef } from "react";
@@ -23,12 +23,10 @@ const languageColor: Record<CellLanguage, string> = {
 
 const LanguageSwitch = ({ id, lang }: { id: string; lang: CellLanguage }) => {
 	const { setCellLanguage } = useReduxActions();
+
 	const switchLanguage = (lang: CellLanguage) => {
 		setCellLanguage({ id, lang });
-		if (document.activeElement) {
-			// @ts-ignore
-			document.activeElement.blur();
-		}
+		dismissDropdown();
 	};
 
 	return (

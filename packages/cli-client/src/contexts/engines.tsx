@@ -81,6 +81,7 @@ export default function EnginesContextProvider({
 					type: TaskType.R_INSTALL,
 					message: JSON.stringify(rPackages),
 				});
+				await webR.evalRVoid("options(crayon.enabled = FALSE)");
 				await webR.installPackages(rPackages);
 				removeTask(installRPackagesTaskId);
 				break;

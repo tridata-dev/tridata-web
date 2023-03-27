@@ -17,34 +17,40 @@ function App() {
 	const { initPythonEngine } = useContext(PythonContext);
 
 	return (
-		<main className="main relative w-screen h-screen">
+		<main className="main relative min-w-screen min-h-screen">
 			<SiteHeader />
+			<section className="flex gap-2">
+				<button
+					className="btn btn-sm"
+					onClick={() => setEngine({ lang: CellLanguage.R })}
+				>
+					init R engine
+				</button>
 
-			<Split className="w-full h-full ">
-				<Split mode="vertical" style={{ width: "50%" }}>
+				<button
+					className="btn btn-sm"
+					onClick={async () => {
+						await initPythonEngine();
+					}}
+				>
+					init Python engine
+				</button>
+
+				<button
+					onClick={() => setEngine({ lang: CellLanguage.SQL })}
+					className="btn btn-sm"
+				>
+					init SQL engine
+				</button>
+			</section>
+			<Split className="min-w-screen min-h-screen">
+				<Split mode="vertical">
 					<EditorPane />
 					<ConsolePane />
 				</Split>
 				<NotebookPane />
 			</Split>
 			<SiteFooter />
-			<section className="flex gap-2">
-				<Button onClick={() => setEngine({ lang: CellLanguage.R })}>
-					init R engine
-				</Button>
-
-				<Button
-					onClick={async () => {
-						await initPythonEngine();
-					}}
-				>
-					init Python engine
-				</Button>
-
-				<Button onClick={() => setEngine({ lang: CellLanguage.SQL })}>
-					init SQL engine
-				</Button>
-			</section>
 		</main>
 	);
 }

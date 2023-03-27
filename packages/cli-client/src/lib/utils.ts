@@ -47,3 +47,10 @@ export const errorToString = (err: unknown) => {
 	}
 	return err;
 };
+
+export const dismissDropdown = () => {
+	if (document.activeElement) {
+		// @ts-ignore
+		document.activeElement.blur();
+	}
+};

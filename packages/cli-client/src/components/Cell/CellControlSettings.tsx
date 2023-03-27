@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import EllipsisIcon from "../icons/Ellipsis";
-import { cn } from "@/lib/utils";
+import { cn, dismissDropdown } from "@/lib/utils";
 import BoltIcon from "../icons/Bolt";
 import TrashIcon from "../icons/Trash";
 import { useReduxActions } from "@/hooks/redux";
@@ -46,45 +46,31 @@ export default function CellControlSettings({ id }: Props) {
 
 	return (
 		<div className="sticky top-0 h-full z-100">
-			<Menu as="div" className="relative inline-block rounded-md">
-				<div>
-					<Menu.Button className="flex items-center">
-						<span className="sr-only">Cell settings</span>
-						<EllipsisIcon />
-					</Menu.Button>
-				</div>
-
-				<Transition
-					as={Fragment}
-					enter="transition ease-out duration-100"
-					enterFrom="transform opacity-0 scale-95"
-					enterTo="transform opacity-100 scale-100"
-					leave="transition ease-in duration-75"
-					leaveFrom="transform opacity-100 scale-100"
-					leaveTo="transform opacity-0 scale-95"
+			<div className="dropdown dropdown-bottom dropdown-end">
+				<button>
+					<span className="sr-only">Cell settings</span>
+					<EllipsisIcon />
+				</button>
+				<ul
+					tabIndex={0}
+					className="dropdown-content menu rounded-md w-32 text-sm"
 				>
-					<Menu.Items className="absolute -left-24 top-0  mt-2 w-24 origin-top-left rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-						<div className="py-1">
-							{menuItems.map((item) => (
-								<Menu.Item key={item.label}>
-									{({ active }) => (
-										<button
-											className={cn(
-												active ? "text-primary" : "text-white",
-												" px-2 py-2 text-sm w-full flex items-center justify-start gap-2",
-											)}
-											onClick={item.onClick}
-										>
-											{item.icon}
-											{item.label}
-										</button>
-									)}
-								</Menu.Item>
-							))}
-						</div>
-					</Menu.Items>
-				</Transition>
-			</Menu>
+					{menuItems.map((item) => (
+						<li key={item.label}>
+							<button
+								onClick={() => {
+									item.onClick();
+									dismissDropdown();
+								}}
+								className="flex items-center gap-2"
+							>
+								{item.icon}
+								<span>{item.label}</span>
+							</button>
+						</li>
+					))}
+				</ul>
+			</div>
 		</div>
 	);
 }

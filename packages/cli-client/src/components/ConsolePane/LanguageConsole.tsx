@@ -12,7 +12,7 @@ export default function LanguageConsole({ lang }: Props) {
 	);
 
 	return (
-		<section className="console-pane text-white text-sm font-mono">
+		<section className="console-pane bg-black text-white text-sm font-mono">
 			<pre className="console-prompt mb-4">{prompt}</pre>
 			{orders.map((id) => {
 				const command = commands[id];

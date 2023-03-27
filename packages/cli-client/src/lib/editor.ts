@@ -5,6 +5,7 @@ import { r } from "@codemirror/legacy-modes/mode/r";
 import { EditorView, keymap, KeyBinding } from "@codemirror/view";
 import { CompletionContext, snippetCompletion } from "@codemirror/autocomplete";
 import { rCompletions, sqlCompletions, pythonCompletions } from "./completions";
+import { vim } from "@replit/codemirror-vim";
 
 const rCompleter = (context: CompletionContext) => {
 	let word = context.matchBefore(/(%|\||\w*)/);
@@ -73,6 +74,8 @@ export const makeKeyboardShortcuts = (keybindings: readonly KeyBinding[]) => {
 const rBaseExtension = StreamLanguage.define(r);
 const pythonBaseExtension = python();
 const sqlBaseExtension = sql();
+
+export const vimExtension = vim();
 
 export const rExtensions = [
 	rBaseExtension,

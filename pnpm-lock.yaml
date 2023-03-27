@@ -20,6 +20,7 @@ importers:
       '@radix-ui/react-tabs': ^1.0.3
       '@radix-ui/react-tooltip': ^1.0.5
       '@reduxjs/toolkit': ^1.9.3
+      '@replit/codemirror-vim': ^6.0.11
       '@tridata/core': workspace:^0.0.1
       '@types/react': ^18.0.27
       '@types/react-dom': ^18.0.10
@@ -27,6 +28,7 @@ importers:
       '@uiw/react-codemirror': ^4.19.9
       '@uiw/react-split': ^5.8.10
       '@vitejs/plugin-react': ^3.1.0
+      ansi-to-react: ^6.1.6
       autoprefixer: ^10.4.14
       class-variance-authority: ^0.4.0
       clsx: ^1.2.1
@@ -60,10 +62,12 @@ importers:
       '@radix-ui/react-tabs': 1.0.3_biqbaboplfbrettd7655fr4n2y
       '@radix-ui/react-tooltip': 1.0.5_zula6vjvt3wdocc4mwcxqa6nzi
       '@reduxjs/toolkit': 1.9.3_k4ae6lp43ej6mezo3ztvx6pykq
+      '@replit/codemirror-vim': 6.0.11_24gumbi44ebqnfvtgijke3b3zq
       '@tridata/core': link:../core
       '@uiw/codemirror-theme-bbedit': 4.19.9_24gumbi44ebqnfvtgijke3b3zq
       '@uiw/react-codemirror': 4.19.9_hnz6wxauxe6eokgzus53blw7eq
       '@uiw/react-split': 5.8.10_biqbaboplfbrettd7655fr4n2y
+      ansi-to-react: 6.1.6_biqbaboplfbrettd7655fr4n2y
       class-variance-authority: 0.4.0_typescript@4.9.5
       clsx: 1.2.1
       comlink: 4.4.1
@@ -1818,6 +1822,19 @@ packages:
       reselect: 4.1.7
     dev: false
 
+  /@replit/codemirror-vim/6.0.11_24gumbi44ebqnfvtgijke3b3zq:
+    resolution: {integrity: sha512-b3umG+3DR9LfNjrPBk1849Cp8WHgFbYFhlFvGg62br03NdVquVKxaQonK7xA8WGurzQeQOpBW+hhr7mzZxWksA==}
+    peerDependencies:
+      '@codemirror/commands': ^6.0.0
+      '@codemirror/language': ^6.1.0
+      '@codemirror/search': ^6.2.0
+      '@codemirror/state': ^6.0.1
+      '@codemirror/view': ^6.0.3
+    dependencies:
+      '@codemirror/language': 6.6.0
+      '@codemirror/view': 6.9.2
+    dev: false
+
   /@swc/helpers/0.4.14:
     resolution: {integrity: sha512-4C7nX/dvpzB7za4Ql9K81xK3HPxCpHMgwTZVyf+9JQ6VUbn9jjZVN7/Nkdz/Ugzs2CSjqnL/UPXroiVBVHUWUw==}
     dependencies:
@@ -2056,6 +2073,10 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  /anser/1.4.10:
+    resolution: {integrity: sha512-hCv9AqTQ8ycjpSd3upOJd7vFwW1JaoYQ7tpham03GJ1ca8/65rqn0RpaWpItOAd6ylW9wAw6luXYPJIyPFVOww==}
+    dev: false
+
   /ansi-regex/5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
@@ -2066,6 +2087,18 @@ packages:
     engines: {node: '>=4'}
     dependencies:
       color-convert: 1.9.3
+
+  /ansi-to-react/6.1.6_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-+HWn72GKydtupxX9TORBedqOMsJRiKTqaLUKW8txSBZw9iBpzPKLI8KOu4WzwD4R7hSv1zEspobY6LwlWvwZ6Q==}
+    peerDependencies:
+      react: ^16.3.2 || ^17.0.0
+      react-dom: ^16.3.2 || ^17.0.0
+    dependencies:
+      anser: 1.4.10
+      escape-carriage: 1.3.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /anymatch/3.1.3:
     resolution: {integrity: sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==}
@@ -2397,6 +2430,10 @@ packages:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
     engines: {node: '>=6'}
     dev: true
+
+  /escape-carriage/1.3.0:
+    resolution: {integrity: sha512-ATWi5MD8QlAGQOeMgI8zTp671BG8aKvAC0M7yenlxU4CRLGO/sKthxVUyjiOFKjHdIo+6dZZUNFgHFeVEaKfGQ==}
+    dev: false
 
   /escape-string-regexp/1.0.5:
     resolution: {integrity: sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==}

@@ -6,6 +6,9 @@
             },
             "security": {
                 "noDangerouslySetInnerHtml": "off"
+            },
+            "a11y": {
+                "useButtonType": "off"
             }
         }
     }

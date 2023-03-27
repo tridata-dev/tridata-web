@@ -13,10 +13,27 @@ import { useReduxSelector } from "@/redux/store";
 import SpinnerIcon from "../icons/Spinner";
 import { PlaneIcon } from "lucide-react";
 import PlayIcon from "../icons/Play";
+import TrashIcon from "../icons/Trash";
+import XIcon from "../icons/X";
+
+type Props = {
+	id: string;
+};
+
+const Delete = ({ id }: Props) => {
+	const { deleteCell } = useReduxActions();
+	return (
+		<button
+			onClick={() => deleteCell({ id })}
+			className="rounded-md p-1 hover:border-2 hover:border-primary"
+		>
+			<XIcon className="w-4 h-4  " />
+		</button>
+	);
+};
 
 const Add = ({ id }: Props) => {
 	const { insertCell } = useReduxActions();
-
 	return (
 		<TooltipProvider>
 			<Tooltip>
@@ -26,11 +43,11 @@ const Add = ({ id }: Props) => {
 				>
 					<PlusIcon className="w-4 h-4" />
 				</TooltipTrigger>
-				<TooltipContent className="w-24 origin-top-right rounded-md bg-white shadow-lg p-0 border-none">
-					<ul className="bg-white text-black p-2">
+				<TooltipContent className="w-24 origin-top-right rounded-md shadow-lg border-none">
+					<ul className=" text-white p-2">
 						{CellLanguages.map((lang) => (
 							<li
-								className="px-2 py-1 rounded-md hover:bg-gray-200 flex justify-start"
+								className="px-2 py-1 rounded-md flex justify-start hover:bg-base-100"
 								key={lang}
 							>
 								<button
@@ -65,16 +82,13 @@ const Run = ({ id }: { id: string }) => {
 	);
 };
 
-type Props = {
-	id: string;
-};
-
 export default function CellControlQuickActions({ id }: Props) {
 	return (
 		<div className="w-8 px-1 invisible group-hover:visible flex flex-col items-center sticky top-0 h-8">
 			<div className="flex flex-col items-center">
 				<Run id={id} />
 				<Add id={id} />
+				<Delete id={id} />
 			</div>
 		</div>
 	);

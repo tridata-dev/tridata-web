@@ -21,12 +21,12 @@ export default function Console() {
 					</TabsTrigger>
 				))}
 			</TabsList>
-			<div className="font-mono px-2 rounded-md ">
+			<div className="font-mono px-2 rounded-md bg-black">
 				{CellLanguages.map((lang) => (
 					<TabsContent
 						value={lang}
 						key={`tab-content-${lang}`}
-						className="border-none px-0 py-2"
+						className="border-none py-2"
 					>
 						<ConsolePane lang={lang} />
 					</TabsContent>

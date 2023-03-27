@@ -5,15 +5,20 @@ import {
 	pythonExtensions,
 	rExtensions,
 	sqlExtensions,
+	vimExtension,
 } from "@/lib/editor";
 import { useReduxSelector } from "@/redux/store";
 import { Command, EditorView } from "@codemirror/view";
 import { useCodeMirror } from "@uiw/react-codemirror";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useReduxActions } from "@/hooks/redux";
-import { CellLanguage } from "@/lib/constants";
+import { CellLanguage, CellLanguages } from "@/lib/constants";
+import { cn } from "@/lib/utils";
+import { useLocalStorage } from "@/hooks/local-storage";
 
 export default function CodeEditor() {
+	const [vimMode, setVimMode] = useLocalStorage("vim_mode", false);
+	const { switchPane } = useReduxActions();
 	const { setPaneCode } = useReduxActions();
 	const { panes, activePane } = useReduxSelector((state) => state.editor);
 	const { code } = panes[activePane];
@@ -31,12 +36,27 @@ export default function CodeEditor() {
 		const selection = view.state.sliceDoc(from, to);
 		let code: string;
 		if (selection) {
-			code = selection;
+			pushCell({ lang: activePane, code: selection, autoExecute: true });
 		} else {
-			to = view.state.doc.lineAt(head).to;
-			code = view.state.sliceDoc(0, to);
+			let { number, text } = view.state.doc.lineAt(head);
+			let codeBlock = [text]
+			while (number > 1) {
+				number--;
+				const line = view.state.doc.line(number)
+				console.log(line)
+				if (line.text.trim() === "") {
+					break
+				}
+				codeBlock.unshift(line.text)
+			}
+			const code = codeBlock.join("\n")
+			pushCell({ lang: activePane, code, autoExecute: true });
+			// console.log(code);
+			// to = line.to;
+			// console.log(head, view.state.doc.lineAt(line.number));
+			// console.log(to);
+			// code = view.state.sliceDoc(0, to);
 		}
-		pushCell({ lang: activePane, code, autoExecute: true });
 		return true;
 	}, []);
 
@@ -54,6 +74,10 @@ export default function CodeEditor() {
 			]),
 		];
 
+		if (vimMode) {
+			baseExtensions.push(vimExtension);
+		}
+
 		if (activePane === CellLanguage.R) {
 			baseExtensions.push(...rExtensions);
 		} else if (activePane === CellLanguage.PYTHON) {
@@ -63,7 +87,7 @@ export default function CodeEditor() {
 		}
 
 		return baseExtensions;
-	}, [activePane]);
+	}, [activePane, vimMode]);
 
 	const { setContainer } = useCodeMirror({
 		container: editor.current,
@@ -82,5 +106,35 @@ export default function CodeEditor() {
 		}
 	}, []);
 
-	return <div ref={editor} />;
+	return (
+		<>
+			<header className="rounded-t-md flex justify-between items-center">
+				<div className="tabs gap-2 font-mono">
+					{CellLanguages.map((lang) => (
+						<button
+							className={cn("tab tab-bordered w-16 px-2", {
+								"tab-active": lang === activePane,
+							})}
+							key={lang}
+							onClick={() => {
+								switchPane(lang);
+							}}
+						>
+							{lang}
+						</button>
+					))}
+				</div>
+				<label className="cursor-pointer label">
+					<span className="label-text text-sm mr-2">vim mode</span>
+					<input
+						type="checkbox"
+						className="toggle bg-indigo-400 toggle-sm"
+						onChange={(e) => setVimMode(e.target.checked)}
+						checked={vimMode}
+					/>
+				</label>
+			</header>
+			<div ref={editor} />
+		</>
+	);
 }
