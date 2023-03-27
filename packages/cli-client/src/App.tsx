@@ -1,23 +1,33 @@
-import CellList from "./components/CellList";
 import "@/styles/tailwind.css";
 import "@/styles/globals.css";
-import Console from "./components/Console";
 import SiteHeader from "./components/SiteHeader";
 import { Button } from "./components/ui/button";
 import { CellLanguage } from "./lib/constants";
 import { useSetEngine } from "./hooks/engines";
 import SiteFooter from "./components/SiteFooter";
-import { initPythonEngine } from "@tridata/core/python";
 import { useContext } from "react";
-import PythonProvider, { PythonContext } from "./contexts/python";
+import { PythonContext } from "./contexts/python";
+import ConsolePane from "./components/ConsolePane";
+import Split from "@uiw/react-split";
+import EditorPane from "./components/EditorPane";
+import NotebookPane from "./components/NotebookPane";
 
 function App() {
-	const { setEngine, setEngineDispatch } = useSetEngine();
-	const { initPythonEngine, pythonEngine } = useContext(PythonContext);
+	const { setEngine } = useSetEngine();
+	const { initPythonEngine } = useContext(PythonContext);
 
 	return (
-		<section className="main relative">
+		<main className="main relative w-screen h-screen">
 			<SiteHeader />
+
+			<Split className="w-full h-full ">
+				<Split mode="vertical" style={{ width: "50%" }}>
+					<EditorPane />
+					<ConsolePane />
+				</Split>
+				<NotebookPane />
+			</Split>
+			<SiteFooter />
 			<section className="flex gap-2">
 				<Button onClick={() => setEngine({ lang: CellLanguage.R })}>
 					init R engine
@@ -35,10 +45,7 @@ function App() {
 					init SQL engine
 				</Button>
 			</section>
-			<CellList />
-			<Console />
-			<SiteFooter />
-		</section>
+		</main>
 	);
 }
 

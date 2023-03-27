@@ -1,8 +1,10 @@
 import { CellLanguage } from "@/lib/constants";
 import type { REngine, SqlEngine, PythonEngine } from "@tridata/core";
 
-export type Engine = REngine | PythonEngine | SqlEngine;
+export type RequireOnly<T, P extends keyof T> = Partial<Omit<T, P>> &
+	Required<Pick<T, P>>;
 
+export type Engine = REngine | PythonEngine | SqlEngine;
 export type ResultVariant = "cell" | "command";
 
 export type RCellResultType = "stdout" | "stderr" | "canvasExec" | "prompt";
@@ -35,6 +37,7 @@ export type Cell = {
 	lang: CellLanguage;
 	code: string;
 	results: CodeResults | undefined;
+	autoExecute: boolean;
 	pending: boolean;
 	success: boolean | undefined;
 	error: boolean | undefined;

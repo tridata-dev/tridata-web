@@ -42,6 +42,7 @@
     "vite": "^4.1.0"
   },
   "dependencies": {
+    "@codemirror/autocomplete": "^6.4.2",
     "@duckdb/duckdb-wasm": "^1.24.0",
     "@r-wasm/webr": "^0.1.0",
     "pyodide": "^0.22.1"

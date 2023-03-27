@@ -6,7 +6,7 @@ type Props = {
 	lang: CellLanguage;
 };
 
-export default function ConsolePane({ lang }: Props) {
+export default function LanguageConsole({ lang }: Props) {
 	const { commands, orders, prompt } = useReduxSelector(
 		(state) => state.console[lang],
 	);

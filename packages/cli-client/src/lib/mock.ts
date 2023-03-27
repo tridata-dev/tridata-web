@@ -13,18 +13,18 @@ import { Cell } from "@/types";
 
 export const getInitialCells = () => {
 	const cells: Record<string, Cell> = {};
-	const orders = Array.from({ length: 9 }, () => generateId());
+	const orders = Array.from({ length: 1 }, () => generateId());
 
 	[
 		RPlotCode,
-		RSummaryCode,
-		RDplyrCode,
-		PythonFunctionCode,
-		PythonPandasCode,
-		PythonPlotCode,
-		SQLQueryCSVCode,
-		SQLQueryParquetCode,
-		SQLCreateTableCode,
+		// RSummaryCode,
+		// RDplyrCode,
+		// PythonFunctionCode,
+		// PythonPandasCode,
+		// PythonPlotCode,
+		// SQLQueryCSVCode,
+		// SQLQueryParquetCode,
+		// SQLCreateTableCode,
 	].forEach((code, i) => {
 		cells[orders[i]] = {
 			code: code.trim(),
@@ -35,6 +35,7 @@ export const getInitialCells = () => {
 						: CellLanguage.PYTHON
 					: CellLanguage.R,
 			results: undefined,
+			autoExecute: false,
 			pending: false,
 			success: undefined,
 			error: undefined,
@@ -53,7 +54,7 @@ export const getInitialCommands = () => {
 			commands: {
 				[ids[0]]: {
 					code: "",
-					results: [],
+					results: undefined,
 					pending: false,
 				},
 			},
@@ -64,7 +65,7 @@ export const getInitialCommands = () => {
 			commands: {
 				[ids[1]]: {
 					code: "",
-					results: [],
+					results: undefined,
 					pending: false,
 				},
 			},
@@ -75,9 +76,26 @@ export const getInitialCommands = () => {
 			commands: {
 				[ids[2]]: {
 					code: "",
-					results: [],
+					results: undefined,
 					pending: false,
 				},
+			},
+		},
+	};
+};
+
+export const getInitialEditorPanes = () => {
+	return {
+		activePane: CellLanguage.R,
+		panes: {
+			[CellLanguage.R]: {
+				code: RDplyrCode,
+			},
+			[CellLanguage.PYTHON]: {
+				code: PythonPlotCode,
+			},
+			[CellLanguage.SQL]: {
+				code: SQLQueryCSVCode,
 			},
 		},
 	};

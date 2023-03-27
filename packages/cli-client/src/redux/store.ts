@@ -4,11 +4,13 @@ import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { enableMapSet } from "immer";
 import { settingsReducer } from "./slices/settings";
 import { consoleReducer } from "./slices/console";
+import { editorReducer } from "./slices/editor";
 
 enableMapSet();
 
 export const store = configureStore({
 	reducer: {
+		editor: editorReducer,
 		cells: cellsReducer,
 		settings: settingsReducer,
 		console: consoleReducer,

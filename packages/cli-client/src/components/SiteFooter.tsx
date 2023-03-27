@@ -1,6 +1,5 @@
 import { useTasks } from "@/hooks/tasks";
-import { cn, groupBy } from "@/lib/utils";
-import classes from "@/styles/footer.module.css";
+import { groupBy } from "@/lib/utils";
 import { ChevronRightIcon } from "lucide-react";
 
 export default function SiteFooter() {

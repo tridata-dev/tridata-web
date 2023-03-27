@@ -8,7 +8,9 @@ type Props = {
 export default function PythonResult({ result, variant }: Props) {
 	if (result.type === "stdout") {
 		if (result.data.startsWith("data:image/png;base64,")) {
-			return <img src={result.data} alt="matplotlib plot" />;
+			return (
+				<img src={result.data} alt="matplotlib plot" width={500} height={500} />
+			);
 		} else {
 			return <pre className="rounded-md text-sm">{result.data}</pre>;
 		}

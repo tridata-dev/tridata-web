@@ -7,13 +7,11 @@ import { createContext, useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
 import { TaskType } from "./tasks";
 import { useReduxSelector } from "@/redux/store";
+import { PythonEngine } from "@tridata/core";
 
 type PythonContextType = {
 	initPythonEngine: () => Promise<void>;
-	pythonEngine: {
-		// rome-ignore lint/suspicious/noExplicitAny: <explanation>
-		runPython: (code: string) => Promise<any>;
-	};
+	pythonEngine: PythonEngine | null;
 };
 
 export const PythonContext = createContext<PythonContextType>(
@@ -30,6 +28,18 @@ export default function PythonProvider({
 		(state) => state.settings.PYTHON,
 	);
 	const pythonWorker = useRef<Remote<PythonWorker> | null>(null);
+	const pythonEngine = useRef<PythonEngine | null>(null);
+
+	const runPython = useCallback(async (code: string) => {
+		if (pythonWorker.current === null) {
+			toast(
+				"The `Python` engine is not initialized or has lost connection. Please load the engine again.`",
+			);
+		} else {
+			const result = await pythonWorker.current.run(code);
+			return result;
+		}
+	}, []);
 
 	const initPythonEngine = useCallback(async () => {
 		if (pythonWorker.current === null && !pending) {
@@ -54,27 +64,17 @@ export default function PythonProvider({
 			await workerWrapped.installPackages(pythonPackages);
 			removeTask(installPythonPackagesTaskId);
 			setPending(false);
+			pythonEngine.current = {
+				runPython,
+			};
 			return banner;
 		}
 	}, []);
 
-	const runPython = useCallback(async (code: string) => {
-		if (pythonWorker.current === null) {
-			toast(
-				"The `Python` engine is not initialized or has lost connection. Please load the engine again.`",
-			);
-		} else {
-			const result = await pythonWorker.current.run(code);
-			return result;
-		}
-	}, []);
-
-	const pythonEngine = {
-		runPython,
-	};
-
 	return (
-		<PythonContext.Provider value={{ initPythonEngine, pythonEngine }}>
+		<PythonContext.Provider
+			value={{ initPythonEngine, pythonEngine: pythonEngine.current }}
+		>
 			{children}
 		</PythonContext.Provider>
 	);

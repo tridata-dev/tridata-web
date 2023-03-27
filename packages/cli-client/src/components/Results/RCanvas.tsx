@@ -27,7 +27,9 @@ export default function RCanvas({ drawCanvasCode, variant }: Props) {
 
 	return (
 		<div
-			className={cn("flex flex-center relative", { "bg-white": isConsole })}
+			className={cn("flex flex-center relative bg-white", {
+				"bg-white": isConsole,
+			})}
 			style={{ width: canvasWidth * scale, height: canvasHeight * scale }}
 		>
 			<canvas ref={renderCanvas} width={canvasWidth} height={canvasHeight} />

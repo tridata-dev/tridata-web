@@ -1,9 +1,10 @@
 import { Cell as CellType } from "@/types";
-import React from "react";
-import Editor from "./Editor";
+import React, { useEffect } from "react";
+import CellEditor from "./CellEditor";
 import Results from "../Results";
 import CellControlSettings from "./CellControlSettings";
 import CellControlQuickActions from "./CellControlQuickActions";
+import { useRunCode } from "@/hooks/run-code";
 
 interface Props {
 	cell: CellType;
@@ -12,18 +13,25 @@ interface Props {
 
 function Cell({ cell, id }: Props) {
 	const { results } = cell;
+	const runCode = useRunCode({ id, lang: cell.lang, type: "cell" });
+
+	useEffect(() => {
+		if (cell.autoExecute) {
+			runCode();
+		}
+	}, [cell.autoExecute]);
 
 	return (
 		<section className="cell group">
-			<div className="flex px-1 py-2 gap-1 relative">
+			<div className="flex px-x gap-1">
 				<CellControlQuickActions id={id} />
-				<div className="cell-main flex-1 max-w-2xl">
-					<Editor cell={cell} id={id} />
-					{results &&
-					// @ts-ignore
-						<Results results={results} lang={cell.lang} variant="cell" />}
+				<div className="cell-main flex-1">
+					<CellEditor cell={cell} id={id} />
+					{results && (
+						// @ts-ignore
+						<Results results={results} lang={cell.lang} variant="cell" />
+					)}
 				</div>
-				<CellControlSettings id={id} />
 			</div>
 		</section>
 	);

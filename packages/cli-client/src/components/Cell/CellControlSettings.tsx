@@ -45,11 +45,8 @@ export default function CellControlSettings({ id }: Props) {
 	];
 
 	return (
-		<div className="sticky top-0 h-full">
-			<Menu
-				as="div"
-				className="relative inline-block text-left hover:bg-gray-100 rounded"
-			>
+		<div className="sticky top-0 h-full z-100">
+			<Menu as="div" className="relative inline-block rounded-md">
 				<div>
 					<Menu.Button className="flex items-center">
 						<span className="sr-only">Cell settings</span>
@@ -66,14 +63,14 @@ export default function CellControlSettings({ id }: Props) {
 					leaveFrom="transform opacity-100 scale-100"
 					leaveTo="transform opacity-0 scale-95"
 				>
-					<Menu.Items className="absolute left-7 -top-1 z-100  mt-2 w-24 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+					<Menu.Items className="absolute -left-24 top-0  mt-2 w-24 origin-top-left rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 						<div className="py-1">
 							{menuItems.map((item) => (
 								<Menu.Item key={item.label}>
 									{({ active }) => (
 										<button
 											className={cn(
-												active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+												active ? "text-primary" : "text-white",
 												" px-2 py-2 text-sm w-full flex items-center justify-start gap-2",
 											)}
 											onClick={item.onClick}

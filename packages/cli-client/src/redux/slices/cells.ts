@@ -1,4 +1,4 @@
-import { Cell } from "@/types";
+import { Cell, RequireOnly } from "@/types";
 import { CellLanguage } from "@/lib/constants";
 import { getInitialCells } from "@/lib/mock";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -10,6 +10,20 @@ type CellsState = {
 	orders: string[];
 };
 
+type DraftCell = RequireOnly<Cell, "lang">;
+
+const createCell = (draft: DraftCell): Cell => {
+	return {
+		lang: draft.lang,
+		code: draft.code || "",
+		results: draft.results ? draft.results : undefined,
+		autoExecute: Boolean(draft.autoExecute),
+		pending: Boolean(draft.pending),
+		success: Boolean(draft.success),
+		error: Boolean(draft.error),
+	};
+};
+
 const initialState: CellsState = {
 	...getInitialCells(),
 };
@@ -18,6 +32,11 @@ const cellsSlice = createSlice({
 	name: "cells",
 	initialState,
 	reducers: {
+		pushCell(state, action: PayloadAction<DraftCell>) {
+			const id = generateId();
+			state.cells[id] = createCell(action.payload);
+			state.orders.unshift(id);
+		},
 		insertCell(
 			state,
 			action: PayloadAction<{ afterId: string; lang?: CellLanguage }>,
@@ -26,14 +45,8 @@ const cellsSlice = createSlice({
 			const { cells, orders } = state;
 			const id = generateId();
 			const prevCell = cells[afterId];
-			cells[id] = {
-				lang: lang || prevCell.lang,
-				code: "",
-				results: undefined,
-				pending: false,
-				success: undefined,
-				error: undefined,
-			};
+			const cell = createCell({ lang: lang || prevCell.lang });
+			cells[id] = cell;
 			const index = orders.indexOf(afterId);
 			orders.splice(index + 1, 0, id);
 		},
@@ -81,6 +94,7 @@ const cellsSlice = createSlice({
 			const { data, error } = action.payload;
 			const cell = state.cells[id];
 			cell.results = data;
+			cell.autoExecute = false;
 			cell.pending = false;
 			cell.success = !error;
 			cell.error = error;
@@ -88,6 +102,7 @@ const cellsSlice = createSlice({
 		builder.addCase(runCell.rejected, (state, action) => {
 			const { id } = action.meta.arg;
 			const cell = state.cells[id];
+			cell.autoExecute = false;
 			cell.pending = false;
 			cell.error = true;
 			cell.success = false;

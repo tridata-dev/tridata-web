@@ -6,9 +6,9 @@ export enum TaskType {
 	R_RUN = "Running R",
 	PYTHON_RUN = "Running Python",
 	SQL_RUN = "Running SQL",
-	R_INIT = "Initting R Engine",
-	PYTHON_INIT = "Initting Python Engine",
-	SQL_INIT = "Initting SQL Engine",
+	R_INIT = "Initializing R",
+	PYTHON_INIT = "Initializing Python",
+	SQL_INIT = "Initializing SQL",
 	R_INSTALL = "Installing R Packages",
 	PYTHON_INSTALL = "Installing Python Packages",
 }

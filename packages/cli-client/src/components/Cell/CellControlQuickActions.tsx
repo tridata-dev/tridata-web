@@ -22,9 +22,9 @@ const Add = ({ id }: Props) => {
 			<Tooltip>
 				<TooltipTrigger
 					onClick={() => insertCell({ afterId: id })}
-					className="rounded-md hover:bg-gray-100 p-1"
+					className="rounded-md p-1 hover:border-2 hover:border-primary"
 				>
-					<PlusIcon className="w-5 h-5" />
+					<PlusIcon className="w-4 h-4" />
 				</TooltipTrigger>
 				<TooltipContent className="w-24 origin-top-right rounded-md bg-white shadow-lg p-0 border-none">
 					<ul className="bg-white text-black p-2">
@@ -58,9 +58,9 @@ const Run = ({ id }: { id: string }) => {
 	) : (
 		<button
 			onClick={() => runCell()}
-			className="rounded-md hover:bg-gray-100 px-1"
+			className="rounded-md p-1 hover:border-2 hover:border-primary"
 		>
-			<PlayIcon className="w-5 h-5" />
+			<PlayIcon className="w-4 h-4" />
 		</button>
 	);
 };
@@ -72,7 +72,7 @@ type Props = {
 export default function CellControlQuickActions({ id }: Props) {
 	return (
 		<div className="w-8 px-1 invisible group-hover:visible flex flex-col items-center sticky top-0 h-8">
-			<div className=" flex flex-col items-center">
+			<div className="flex flex-col items-center">
 				<Run id={id} />
 				<Add id={id} />
 			</div>
