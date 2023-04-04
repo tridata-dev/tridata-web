@@ -9,11 +9,14 @@ import ChevronDownIcon from "../icons/ChevronDown";
 import { Cell } from "@/types";
 import {
 	CellEditorTheme,
+	makeKeyboardShortcuts,
 	pythonExtensions,
 	rExtensions,
 	sqlExtensions,
 } from "@/lib/editor";
 import CellControlSettings from "./CellControlSettings";
+import { useLocalStorage } from "@/hooks/local-storage";
+import { useRunCode, useRunEditorSelection } from "@/hooks/run-code";
 
 const languageColor: Record<CellLanguage, string> = {
 	[CellLanguage.R]: "bg-[#1E63B4]",
@@ -58,25 +61,40 @@ type Props = {
 };
 
 export default function CellEditor({ id, cell }: Props) {
-	const { setCellCode, setCellLanguage } = useReduxActions();
+	const { setCellCode } = useReduxActions();
 	const { theme, lineNumbers } = useReduxSelector(
 		(state) => state.settings.editor,
 	);
+	const runCell = useRunCode({ id, lang: cell.lang });
 	const editor = useRef<HTMLInputElement>(null);
 
 	const { code, lang } = cell;
 
 	const extensions = useMemo(() => {
-		const extensions = [CellEditorTheme, EditorView.lineWrapping];
+		const baseExtensions = [
+			CellEditorTheme,
+			EditorView.lineWrapping,
+			makeKeyboardShortcuts([
+				{
+					key: "Shift-Enter",
+					run: (view) => {
+						runCell();
+						return true;
+					},
+					preventDefault: true,
+				},
+			]),
+		];
+
 		if (lang === CellLanguage.R) {
-			extensions.push(rExtensions);
+			baseExtensions.push(rExtensions);
 		} else if (lang === CellLanguage.PYTHON) {
-			extensions.push(pythonExtensions);
+			baseExtensions.push(pythonExtensions);
 		} else {
-			extensions.push(sqlExtensions);
+			baseExtensions.push(sqlExtensions);
 		}
 
-		return extensions;
+		return baseExtensions;
 	}, [cell.lang]);
 
 	const { setContainer } = useCodeMirror({

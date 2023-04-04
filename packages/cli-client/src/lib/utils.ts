@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { CellLanguage } from "./constants";
 
 // this is defined in Astrodown
-type CodeBlocks = Record<CellLanguage, string[]>;
+type CodeBlocks = Record<CellLanguage, string>;
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));

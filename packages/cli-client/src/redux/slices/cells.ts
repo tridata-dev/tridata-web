@@ -25,7 +25,8 @@ const createCell = (draft: DraftCell): Cell => {
 };
 
 const initialState: CellsState = {
-	...getInitialCells(),
+	cells: {},
+	orders: [],
 };
 
 const cellsSlice = createSlice({

@@ -12,7 +12,7 @@ const canvasHeight = 1000;
 
 export default function RCanvas({ drawCanvasCode, variant }: Props) {
 	const isConsole = variant === "command";
-	const scale = isConsole ? 0.4 : 0.5;
+	const scale = isConsole ? 0.4 : 0.45;
 	const renderCanvas = useCallback(
 		(canvas: HTMLCanvasElement) => {
 			if (canvas) {
@@ -27,7 +27,7 @@ export default function RCanvas({ drawCanvasCode, variant }: Props) {
 
 	return (
 		<div
-			className={cn("flex flex-center relative bg-white", {
+			className={cn("flex  relative bg-white", {
 				"bg-white": isConsole,
 			})}
 			style={{ width: canvasWidth * scale, height: canvasHeight * scale }}

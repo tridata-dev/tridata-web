@@ -70,36 +70,41 @@ export default function EnginesContextProvider({
 	const initEngine = async (payload: initEnginePayload) => {
 		switch (payload.lang) {
 			case CellLanguage.R:
-				const { initREngine } = await import("@tridata/core/r");
-				const rInitTaskId = addTask({ type: TaskType.R_INIT, timerStart: 0 });
-				const { webR, prompt } = await initREngine();
-				removeTask(rInitTaskId);
-				setPrompt({ lang: CellLanguage.R, prompt: prompt.trim() });
-				setEngineDispatch({ type: CellLanguage.R, payload: webR });
-				const installRPackagesTaskId = addTask({
-					type: TaskType.R_INSTALL,
-					message: JSON.stringify(rPackages),
-				});
-				await webR.evalRVoid("options(crayon.enabled = FALSE)");
-				await webR.installPackages(rPackages);
-				removeTask(installRPackagesTaskId);
-				break;
-			case CellLanguage.SQL:
-				const { initDuckDbEngine } = await import("@tridata/core/sql");
-				const sqlInitTaskId = addTask({
-					type: TaskType.SQL_INIT,
-					timerStart: 0,
-				});
-				const engine = await initDuckDbEngine();
-				if (!engine) {
-					return;
+				if (!engines.R) {
+					const { initREngine } = await import("@tridata/core/r");
+					const rInitTaskId = addTask({ type: TaskType.R_INIT, timerStart: 0 });
+					const { webR, prompt } = await initREngine();
+					removeTask(rInitTaskId);
+					setPrompt({ lang: CellLanguage.R, prompt: prompt.trim() });
+					setEngineDispatch({ type: CellLanguage.R, payload: webR });
+					const installRPackagesTaskId = addTask({
+						type: TaskType.R_INSTALL,
+						message: JSON.stringify(rPackages),
+					});
+					await webR.evalRVoid("options(crayon.enabled = FALSE)");
+					await webR.installPackages(rPackages);
+					removeTask(installRPackagesTaskId);
+					break;
 				}
-				setEngineDispatch({
-					type: CellLanguage.SQL,
-					payload: engine as SqlEngine,
-				});
-				removeTask(sqlInitTaskId);
-				break;
+
+			case CellLanguage.SQL:
+				if (!engines.SQL) {
+					const { initDuckDbEngine } = await import("@tridata/core/sql");
+					const sqlInitTaskId = addTask({
+						type: TaskType.SQL_INIT,
+						timerStart: 0,
+					});
+					const engine = await initDuckDbEngine();
+					if (!engine) {
+						return;
+					}
+					setEngineDispatch({
+						type: CellLanguage.SQL,
+						payload: engine as SqlEngine,
+					});
+					removeTask(sqlInitTaskId);
+					break;
+				}
 		}
 	};
 

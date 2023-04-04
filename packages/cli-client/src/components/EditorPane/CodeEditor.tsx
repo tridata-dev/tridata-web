@@ -15,9 +15,12 @@ import { useReduxActions } from "@/hooks/redux";
 import { CellLanguage, CellLanguages } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useLocalStorage } from "@/hooks/local-storage";
+import PlayIcon from "../icons/Play";
+import { useRunEditorSelection } from "@/hooks/run-code";
 
 export default function CodeEditor() {
 	const [vimMode, setVimMode] = useLocalStorage("vim_mode", false);
+	const runSelection = useRunEditorSelection();
 	const { switchPane } = useReduxActions();
 	const { setPaneCode } = useReduxActions();
 	const { panes, activePane } = useReduxSelector((state) => state.editor);
@@ -28,31 +31,6 @@ export default function CodeEditor() {
 	const { theme, lineNumbers } = useReduxSelector(
 		(state) => state.settings.editor,
 	);
-
-	const runSelection: Command = useCallback((view: EditorView) => {
-		// run selection in the editor
-		// if no selection, run all the content before the cursor
-		const { from, to, head } = view.state.selection.main;
-		const selection = view.state.sliceDoc(from, to);
-		if (selection) {
-			pushCell({ lang: activePane, code: selection, autoExecute: true });
-		} else {
-			const { number, text } = view.state.doc.lineAt(head);
-			// const codeBlock = [text]
-			// while (number > 1) {
-			// 	number--;
-			// 	const line = view.state.doc.line(number)
-			// 	console.log(line)
-			// 	if (line.text.trim() === "") {
-			// 		break
-			// 	}
-			// 	codeBlock.unshift(line.text)
-			// }
-			// const code = codeBlock.join("\n")
-			pushCell({ lang: activePane, code: text, autoExecute: true });
-		}
-		return true;
-	}, []);
 
 	const extensions = useMemo(() => {
 		const baseExtensions = [
@@ -83,7 +61,7 @@ export default function CodeEditor() {
 		return baseExtensions;
 	}, [activePane, vimMode]);
 
-	const { setContainer } = useCodeMirror({
+	const { setContainer, state: editorState } = useCodeMirror({
 		container: editor.current,
 		value: code,
 		onChange: (code) => setPaneCode({ pane: activePane, code }),
@@ -101,12 +79,12 @@ export default function CodeEditor() {
 	}, []);
 
 	return (
-		<>
+		<section className="code-editor relative group">
 			<header className="rounded-t-md flex justify-between items-center">
 				<div className="tabs gap-2 font-mono">
 					{CellLanguages.map((lang) => (
 						<button
-							className={cn("tab tab-bordered w-16 px-2", {
+							className={cn("tab w-16 px-2", {
 								"tab-active": lang === activePane,
 							})}
 							key={lang}
@@ -129,6 +107,15 @@ export default function CodeEditor() {
 				</label>
 			</header>
 			<div ref={editor} />
-		</>
+			<footer className="absolute right-1 bottom-1 hidden group-hover:block group-focus:block">
+				<button
+					onClick={() => {
+						pushCell({ lang: activePane, code, autoExecute: true });
+					}}
+				>
+					<PlayIcon className="w-8 h-8 hover:stroke-primary" />
+				</button>
+			</footer>
+		</section>
 	);
 }

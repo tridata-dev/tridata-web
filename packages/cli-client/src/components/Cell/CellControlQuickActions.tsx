@@ -7,13 +7,10 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { CellLanguages } from "@/lib/constants";
-import ForwardIcon from "../icons/Forward";
 import { useRunCode } from "@/hooks/run-code";
 import { useReduxSelector } from "@/redux/store";
 import SpinnerIcon from "../icons/Spinner";
-import { PlaneIcon } from "lucide-react";
 import PlayIcon from "../icons/Play";
-import TrashIcon from "../icons/Trash";
 import XIcon from "../icons/X";
 
 type Props = {
@@ -23,11 +20,8 @@ type Props = {
 const Delete = ({ id }: Props) => {
 	const { deleteCell } = useReduxActions();
 	return (
-		<button
-			onClick={() => deleteCell({ id })}
-			className="rounded-md p-1 hover:border-2 hover:border-primary"
-		>
-			<XIcon className="w-4 h-4  " />
+		<button onClick={() => deleteCell({ id })} className="rounded-md p-1">
+			<XIcon className="w-4 h-4 hover:stroke-primary" />
 		</button>
 	);
 };
@@ -39,9 +33,9 @@ const Add = ({ id }: Props) => {
 			<Tooltip>
 				<TooltipTrigger
 					onClick={() => insertCell({ afterId: id })}
-					className="rounded-md p-1 hover:border-2 hover:border-primary"
+					className="rounded-md p-1"
 				>
-					<PlusIcon className="w-4 h-4" />
+					<PlusIcon className="w-4 h-4 hover:stroke-primary" />
 				</TooltipTrigger>
 				<TooltipContent className="w-24 origin-top-right rounded-md shadow-lg border-none">
 					<ul className=" text-white p-2">
@@ -73,11 +67,8 @@ const Run = ({ id }: { id: string }) => {
 	return cell.pending ? (
 		<SpinnerIcon className="w-4 h-4" />
 	) : (
-		<button
-			onClick={() => runCell()}
-			className="rounded-md p-1 hover:border-2 hover:border-primary"
-		>
-			<PlayIcon className="w-4 h-4" />
+		<button onClick={() => runCell()} className="rounded-md p-1">
+			<PlayIcon className="w-4 h-4 hover:stroke-primary" />
 		</button>
 	);
 };

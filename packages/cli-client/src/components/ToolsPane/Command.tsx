@@ -11,6 +11,7 @@ type Props = {
 	id: string;
 	command: CommandType;
 	lang: CellLanguage;
+	setClearPrompt: (clear: boolean) => void;
 };
 
 const prefixLookup: Record<CellLanguage, string> = {
@@ -28,10 +29,9 @@ const autoCompletePairs: Record<string, string> = {
 	"`": "`",
 } as const;
 
-export default function Command({ id, lang, command }: Props) {
+export default function Command({ id, lang, command, setClearPrompt }: Props) {
 	const [input, setInput] = useState(command.code);
-	const { addCommand, updateCommand, clearPreviousCommands } =
-		useReduxActions();
+	const { updateCommand, clearPreviousCommands } = useReduxActions();
 	const runCommand = useRunCode({ id, lang, type: "command" });
 	const ref = useRef<HTMLTextAreaElement>(null);
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -43,6 +43,7 @@ export default function Command({ id, lang, command }: Props) {
 		if (e.ctrlKey && e.key === "l") {
 			e.preventDefault();
 			clearPreviousCommands({ id, lang });
+			setClearPrompt(true);
 		}
 
 		if (e.key === "Enter" && !e.shiftKey) {
@@ -97,7 +98,7 @@ export default function Command({ id, lang, command }: Props) {
 				)}
 
 				<textarea
-					className="flex-1 outline-none bg-black w-full inline-block overflow-hidden resize-none"
+					className="flex-1 bg-base-100 outline-none w-full inline-block overflow-hidden resize-none"
 					ref={ref}
 					value={input}
 					onChange={(e) => {

@@ -1,4 +1,4 @@
-import { useReduxDispatch } from "@/redux/store";
+import { useReduxDispatch, useReduxSelector } from "@/redux/store";
 import { runCell as runCellThunk } from "@/redux/thunks/cells";
 import { runCommand as runCommandThunk } from "@/redux/thunks/console";
 import { TridataError } from "@tridata/core";
@@ -12,6 +12,8 @@ import { cellsActions } from "@/redux";
 import { useContext } from "react";
 import { PythonContext } from "@/contexts/python";
 import { Engine } from "@/types";
+import { EditorView, Command } from "@codemirror/view";
+import { useReduxActions } from "./redux";
 
 const taskTypes = {
 	[CellLanguage.R]: TaskType.R_RUN,
@@ -27,7 +29,6 @@ export const useRunCode = ({
 	const dispatch = useReduxDispatch();
 	const engine = useEngine({ lang });
 	const { addTask, removeTask } = useTaskActions();
-
 	const run = async () => {
 		if (!engine) {
 			toast.error(
@@ -64,4 +65,34 @@ export const useRunCode = ({
 	};
 
 	return run;
+};
+
+export const useRunEditorSelection = () => {
+	const { pushCell } = useReduxActions();
+	const { activePane } = useReduxSelector((state) => state.editor);
+	const runSelection: Command = (view: EditorView) => {
+		// run selection in the editor
+		// if no selection, run all the content before the cursor
+		const { from, to, head } = view.state.selection.main;
+		const selection = view.state.sliceDoc(from, to);
+		if (selection) {
+			pushCell({ lang: activePane, code: selection, autoExecute: true });
+		} else {
+			const { number, text } = view.state.doc.lineAt(head);
+			// const codeBlock = [text]
+			// while (number > 1) {
+			// 	number--;
+			// 	const line = view.state.doc.line(number)
+			// 	console.log(line)
+			// 	if (line.text.trim() === "") {
+			// 		break
+			// 	}
+			// 	codeBlock.unshift(line.text)
+			// }
+			// const code = codeBlock.join("\n")
+			pushCell({ lang: activePane, code: text, autoExecute: true });
+		}
+		return true;
+	};
+	return runSelection;
 };
