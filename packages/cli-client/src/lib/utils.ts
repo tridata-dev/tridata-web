@@ -1,5 +1,9 @@
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { CellLanguage } from "./constants";
+
+// this is defined in Astrodown
+type CodeBlocks = Record<CellLanguage, string[]>;
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -28,9 +32,9 @@ export function groupBy<T, K extends keyof T>(array: T[], key: K) {
 		return new Map<T[K], T[]>();
 	}
 
-	let map = new Map<T[K], T[]>();
+	const map = new Map<T[K], T[]>();
 	array.forEach((item) => {
-		let itemKey = item[key];
+		const itemKey = item[key];
 		if (!map.has(itemKey)) {
 			map.set(
 				itemKey,
@@ -46,6 +50,10 @@ export const errorToString = (err: unknown) => {
 		return err.message;
 	}
 	return err;
+};
+
+export const base64ToObj = (text: string): CodeBlocks => {
+	return JSON.parse(atob(text));
 };
 
 export const dismissDropdown = () => {

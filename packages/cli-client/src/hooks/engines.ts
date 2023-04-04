@@ -1,4 +1,4 @@
-import { EnginesContext, SetEngineContext } from "@/contexts/engines";
+import { EnginesContext, EngineContext } from "@/contexts/engines";
 import { PythonContext } from "@/contexts/python";
 import { CellLanguage } from "@/lib/constants";
 import { useContext } from "react";
@@ -13,7 +13,7 @@ export const useEngine = ({ lang }: { lang: CellLanguage }) => {
 	return engine;
 };
 
-export const useSetEngine = () => {
-	const setEngine = useContext(SetEngineContext);
-	return setEngine;
+export const useInitEngine = () => {
+	const { initEngine } = useContext(EngineContext);
+	return initEngine;
 };

@@ -9,7 +9,7 @@ export default function Console() {
 	);
 
 	return (
-		<Tabs defaultValue={activePane} className="w-full">
+		<Tabs defaultValue={activePane} className="w-full h-full">
 			<TabsList>
 				{CellLanguages.map((lang) => (
 					<TabsTrigger

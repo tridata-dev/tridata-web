@@ -12,14 +12,13 @@ type ActionsType =
 	| { type: CellLanguage.R; payload: REngine }
 	| { type: CellLanguage.PYTHON; payload: PythonEngine }
 	| { type: CellLanguage.SQL; payload: SqlEngine };
-type SetEnginePayload =
+type initEnginePayload =
 	| { lang: CellLanguage.R }
 	| { lang: CellLanguage.PYTHON }
 	| { lang: CellLanguage.SQL };
 
-type SetEngineContextType = {
-	setEngine: (payload: SetEnginePayload) => void;
-	setEngineDispatch: React.Dispatch<ActionsType>;
+type EngineContextType = {
+	initEngine: (payload: initEnginePayload) => void;
 };
 
 type EnginesContextType = {
@@ -32,8 +31,8 @@ export const EnginesContext = createContext<EnginesContextType>(
 	{} as EnginesContextType,
 );
 
-export const SetEngineContext = createContext<SetEngineContextType>(
-	{} as SetEngineContextType,
+export const EngineContext = createContext<EngineContextType>(
+	{} as EngineContextType,
 );
 
 export default function EnginesContextProvider({
@@ -68,7 +67,7 @@ export default function EnginesContextProvider({
 
 	const { addTask, removeTask } = useTaskActions();
 
-	const setEngine = async (payload: SetEnginePayload) => {
+	const initEngine = async (payload: initEnginePayload) => {
 		switch (payload.lang) {
 			case CellLanguage.R:
 				const { initREngine } = await import("@tridata/core/r");
@@ -105,10 +104,10 @@ export default function EnginesContextProvider({
 	};
 
 	return (
-		<SetEngineContext.Provider value={{ setEngine, setEngineDispatch }}>
+		<EngineContext.Provider value={{ initEngine }}>
 			<EnginesContext.Provider value={engines}>
 				{children}
 			</EnginesContext.Provider>
-		</SetEngineContext.Provider>
+		</EngineContext.Provider>
 	);
 }

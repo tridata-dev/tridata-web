@@ -32,30 +32,24 @@ export default function CodeEditor() {
 	const runSelection: Command = useCallback((view: EditorView) => {
 		// run selection in the editor
 		// if no selection, run all the content before the cursor
-		let { from, to, head } = view.state.selection.main;
+		const { from, to, head } = view.state.selection.main;
 		const selection = view.state.sliceDoc(from, to);
-		let code: string;
 		if (selection) {
 			pushCell({ lang: activePane, code: selection, autoExecute: true });
 		} else {
-			let { number, text } = view.state.doc.lineAt(head);
-			let codeBlock = [text]
-			while (number > 1) {
-				number--;
-				const line = view.state.doc.line(number)
-				console.log(line)
-				if (line.text.trim() === "") {
-					break
-				}
-				codeBlock.unshift(line.text)
-			}
-			const code = codeBlock.join("\n")
-			pushCell({ lang: activePane, code, autoExecute: true });
-			// console.log(code);
-			// to = line.to;
-			// console.log(head, view.state.doc.lineAt(line.number));
-			// console.log(to);
-			// code = view.state.sliceDoc(0, to);
+			const { number, text } = view.state.doc.lineAt(head);
+			// const codeBlock = [text]
+			// while (number > 1) {
+			// 	number--;
+			// 	const line = view.state.doc.line(number)
+			// 	console.log(line)
+			// 	if (line.text.trim() === "") {
+			// 		break
+			// 	}
+			// 	codeBlock.unshift(line.text)
+			// }
+			// const code = codeBlock.join("\n")
+			pushCell({ lang: activePane, code: text, autoExecute: true });
 		}
 		return true;
 	}, []);

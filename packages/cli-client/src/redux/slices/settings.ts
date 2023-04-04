@@ -8,9 +8,14 @@ type SettingsState = {
 	};
 	[CellLanguage.R]: {
 		packages: string[];
+		autoInit: boolean;
 	};
 	[CellLanguage.PYTHON]: {
 		packages: string[];
+		autoInit: boolean;
+	};
+	[CellLanguage.SQL]: {
+		autoInit: boolean;
 	};
 };
 
@@ -21,9 +26,14 @@ const initialState: SettingsState = {
 	},
 	[CellLanguage.R]: {
 		packages: ["dplyr"],
+		autoInit: true,
 	},
 	[CellLanguage.PYTHON]: {
 		packages: ["pandas", "matplotlib"],
+		autoInit: false,
+	},
+	[CellLanguage.SQL]: {
+		autoInit: false,
 	},
 };
 
