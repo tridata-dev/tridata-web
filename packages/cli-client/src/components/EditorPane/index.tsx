@@ -2,7 +2,7 @@ import CodeEditor from "./CodeEditor";
 
 export default function EditorPane() {
 	return (
-		<section style={{ height: "50%" }} className="p-2">
+		<section className="p-4 border-1 border-white">
 			<CodeEditor />
 		</section>
 	);

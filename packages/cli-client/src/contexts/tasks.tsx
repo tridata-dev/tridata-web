@@ -30,6 +30,7 @@ type TaskActionsContextType = {
 		message,
 	}: { type: TaskType; timerStart?: number; message?: string }) => string;
 	removeTask: (id: string) => void;
+	hasTask: (type: TaskType) => boolean;
 };
 
 export const TasksContext = createContext<TasksContextType>(
@@ -75,6 +76,7 @@ export default function TasksContextProvider({
 		setTasks((draft) => {
 			const index = draft.findIndex((task) => task.id === id);
 			if (index !== -1) {
+				// remove the task and set the next task of the same type to pending
 				const oldTaskType = draft[index].type;
 				draft.splice(index, 1);
 				if (draft.length > 0) {
@@ -88,6 +90,10 @@ export default function TasksContextProvider({
 			}
 		});
 	}, []);
+
+	const hasTask: TaskActionsContextType["hasTask"] = (type) => {
+		return tasks.findIndex((task) => task.type === type) !== -1;
+	};
 
 	useEffect(() => {
 		let timer: NodeJS.Timeout | undefined;
@@ -113,7 +119,7 @@ export default function TasksContextProvider({
 	}, [tasks]);
 
 	return (
-		<TaskActionsContext.Provider value={{ addTask, removeTask }}>
+		<TaskActionsContext.Provider value={{ addTask, removeTask, hasTask }}>
 			<TasksContext.Provider value={{ tasks }}>
 				{children}
 			</TasksContext.Provider>

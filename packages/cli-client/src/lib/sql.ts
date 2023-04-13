@@ -17,9 +17,12 @@ export const runSQL = async ({
 		const nrow = q.numRows;
 		const ncol = q.numCols;
 		const values = [];
-		const nMax = Math.min(100, nrow);
+		const nMax = Math.min(20, nrow);
 		for (let i = 0; i < nMax; i++) {
 			values.push(Object.values(records[i]));
+		}
+		if (nrow > nMax) {
+			values.push(Array(ncol).fill("..."));
 		}
 		const result = {
 			nrow,

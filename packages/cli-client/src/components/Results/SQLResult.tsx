@@ -14,7 +14,7 @@ export default function SQLResult({ result, variant }: Props) {
 	}
 
 	return (
-		<div className="sql-table">
+		<div className="sql-table font-mono">
 			{/* <div
 				dangerouslySetInnerHTML={{ __html: makeTableHTML(result, isCell) }}
 			/> */}
@@ -22,7 +22,9 @@ export default function SQLResult({ result, variant }: Props) {
 				<thead>
 					<tr>
 						{result.data.schema.map((x) => (
-							<th key={x.name}>{truncate(x.name)}</th>
+							<th className="px-2" key={x.name}>
+								{truncate(x.name)}
+							</th>
 						))}
 					</tr>
 				</thead>
@@ -30,7 +32,7 @@ export default function SQLResult({ result, variant }: Props) {
 					{result.data.values.map((row) => (
 						<tr>
 							{row.map((x) => (
-								<td>{truncate(x)}</td>
+								<td className="px-2">{truncate(x)}</td>
 							))}
 						</tr>
 					))}

@@ -6,13 +6,27 @@ import { useInitEngine } from "./hooks/engines";
 import SiteFooter from "./components/SiteFooter";
 import { useContext, useEffect } from "react";
 import { PythonContext } from "./contexts/python";
-import Split from "@uiw/react-split";
 import EditorPane from "./components/EditorPane";
 import NotebookPane from "./components/NotebookPane";
 import { useReduxSelector } from "./redux/store";
 import { base64ToObj } from "./lib/utils";
 import { useReduxActions } from "./hooks/redux";
 import ToolsPane from "./components/ToolsPane";
+import Split from "@uiw/react-split";
+import React from "react";
+
+const Demo = () => (
+	<Split style={{ height: 200, border: "1px solid #d5d5d5", borderRadius: 3 }}>
+		<Split mode="vertical">
+			<div style={{ height: "50%" }}>Top Pane</div>
+			<Split style={{ height: "50%" }}>
+				<div>Left Pane</div>
+				<div style={{ flex: 1 }}>Right Pane</div>
+			</Split>
+		</Split>
+		<div style={{ flex: 1 }}>Right Pane</div>
+	</Split>
+);
 
 function App() {
 	const settings = useReduxSelector((state) => state.settings);
@@ -64,38 +78,16 @@ function App() {
 	}, []);
 
 	return (
-		<main className="main relative min-w-screen min-h-screen">
+		<main className="main relative min-w-screen">
 			<SiteHeader />
-			<section className="flex gap-2">
-				<button
-					className="btn btn-sm"
-					onClick={() => initEngine({ lang: CellLanguage.R })}
-				>
-					init R engine
-				</button>
-
-				<button
-					className="btn btn-sm"
-					onClick={async () => {
-						await initPythonEngine();
-					}}
-				>
-					init Python engine
-				</button>
-
-				<button
-					onClick={() => initEngine({ lang: CellLanguage.SQL })}
-					className="btn btn-sm"
-				>
-					init SQL engine
-				</button>
-			</section>
-			<Split className="min-w-screen min-h-screen">
-				<Split mode="vertical">
+			<Split>
+				<div style={{ width: "50%", minWidth: "40%" }} className="min-h-screen">
 					<EditorPane />
 					<ToolsPane />
-				</Split>
-				<NotebookPane />
+				</div>
+				<div style={{ width: "50%", minWidth: "20%" }}>
+					<NotebookPane />
+				</div>
 			</Split>
 			<SiteFooter />
 		</main>

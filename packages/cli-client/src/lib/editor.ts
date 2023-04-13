@@ -8,7 +8,7 @@ import { rCompletions, sqlCompletions, pythonCompletions } from "./completions";
 import { vim } from "@replit/codemirror-vim";
 
 const rCompleter = (context: CompletionContext) => {
-	let word = context.matchBefore(/(%|\||\w*)/);
+	const word = context.matchBefore(/(%|\||\w*)/);
 	if (word) {
 		if (word.from === word.to && !context.explicit) return null;
 		return {
@@ -19,7 +19,7 @@ const rCompleter = (context: CompletionContext) => {
 };
 
 const sqlCompleter = (context: CompletionContext) => {
-	let word = context.matchBefore(/\w*/);
+	const word = context.matchBefore(/\w*/);
 	if (word) {
 		if (word.from === word.to && !context.explicit) return null;
 		return {
@@ -30,7 +30,7 @@ const sqlCompleter = (context: CompletionContext) => {
 };
 
 const pythonCompleter = (context: CompletionContext) => {
-	let word = context.matchBefore(/\w*/);
+	const word = context.matchBefore(/\w*/);
 	if (word) {
 		if (word.from === word.to && !context.explicit) return null;
 		return {
@@ -43,6 +43,7 @@ const pythonCompleter = (context: CompletionContext) => {
 export const BaseEditorTheme = EditorView.baseTheme({
 	"&": {
 		padding: "5px",
+		height: "auto",
 	},
 	".cm-content": {
 		fontFamily: "Fira Code, monospace",

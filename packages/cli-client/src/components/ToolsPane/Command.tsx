@@ -6,6 +6,7 @@ import { useReduxActions } from "@/hooks/redux";
 import { useRunCode } from "@/hooks/run-code";
 import SpinnerIcon from "../icons/Spinner";
 import Results from "../Results";
+import { useReduxSelector } from "@/redux/store";
 
 type Props = {
 	id: string;
@@ -32,12 +33,23 @@ const autoCompletePairs: Record<string, string> = {
 export default function Command({ id, lang, command, setClearPrompt }: Props) {
 	const [input, setInput] = useState(command.code);
 	const { updateCommand, clearPreviousCommands } = useReduxActions();
+	const { commands, orders } = useReduxSelector((state) => state.console[lang]);
+	const [pos, setPos] = useState(() =>
+		orders.findIndex((order) => order === id),
+	);
 	const runCommand = useRunCode({ id, lang, type: "command" });
 	const ref = useRef<HTMLTextAreaElement>(null);
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.shiftKey && e.key === "Enter") {
 			e.preventDefault();
 			setInput((prev) => `${prev}\n`);
+		}
+
+		if (e.key === "ArrowUp") {
+			if (pos > 0) {
+				setPos((prev) => prev - 1);
+				setInput(commands[orders[pos - 1]].code);
+			}
 		}
 
 		if (e.ctrlKey && e.key === "l") {
@@ -72,10 +84,10 @@ export default function Command({ id, lang, command, setClearPrompt }: Props) {
 	};
 
 	useEffect(() => {
-		if (input === "") {
-			ref.current?.focus();
-		}
+		ref.current?.focus();
+	}, []);
 
+	useEffect(() => {
 		if (ref.current) {
 			const el = ref.current;
 			// We need to reset the height momentarily to get the correct scrollHeight for the textarea

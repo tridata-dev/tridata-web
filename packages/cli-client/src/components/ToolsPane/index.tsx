@@ -13,21 +13,26 @@ function ToolsPane() {
 	const [activePane, setActivePane] = useState("Console");
 
 	return (
-		<section className="p-2" style={{ height: "50%" }}>
+		<section className="p-4 border-t-2 border-white">
 			<div className="tabs">
 				{tabs.map((tab) => (
 					<div
-						className={cn("tab", { "tab-active": activePane === tab.label })}
+						className={cn("tab p-0", {
+							"tab-active": activePane === tab.label,
+						})}
 						key={tab.label}
 					>
-						<button className="w-full" onClick={() => setActivePane(tab.label)}>
+						<button
+							className="w-full px-2"
+							onClick={() => setActivePane(tab.label)}
+						>
 							{tab.label}
 						</button>
 					</div>
 				))}
 			</div>
 			{activePane === "Console" && <Console />}
-			{activePane === "Environment" && <div>TBD</div>}
+			{activePane === "Environment" && <p className="font-mono p-2">TBD</p>}
 		</section>
 	);
 }

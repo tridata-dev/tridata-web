@@ -21,7 +21,7 @@ export default function Console() {
 					</div>
 				))}
 			</div>
-			<div className="flex-1">
+			<div className="flex-1 w-[100%]">
 				<LanguageConsole lang={activePane} />
 			</div>
 		</section>

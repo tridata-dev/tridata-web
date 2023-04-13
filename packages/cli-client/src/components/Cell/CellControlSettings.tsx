@@ -62,7 +62,7 @@ export default function CellControlSettings({ id }: Props) {
 									item.onClick();
 									dismissDropdown();
 								}}
-								className="flex items-center gap-2"
+								className="flex items-center gap-2 bg-base-100/90"
 							>
 								{item.icon}
 								<span>{item.label}</span>
