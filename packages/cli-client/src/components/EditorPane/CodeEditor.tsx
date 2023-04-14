@@ -10,13 +10,21 @@ import {
 import { useReduxSelector } from "@/redux/store";
 import { Command, EditorView } from "@codemirror/view";
 import { useCodeMirror } from "@uiw/react-codemirror";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { useReduxActions } from "@/hooks/redux";
 import { CellLanguage, CellLanguages } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useLocalStorage } from "@/hooks/local-storage";
 import PlayIcon from "../icons/Play";
 import { useRunEditorSelection } from "@/hooks/run-code";
+import { useEngine } from "@/hooks/engines";
 
 export default function CodeEditor() {
 	const [vimMode, setVimMode] = useLocalStorage("vim_mode", false);
@@ -25,6 +33,7 @@ export default function CodeEditor() {
 	const { setPaneCode } = useReduxActions();
 	const { panes, activePane } = useReduxSelector((state) => state.editor);
 	const { code } = panes[activePane];
+	const { engine, pending, initEngineFunc } = useEngine({ lang: activePane });
 
 	const editor = useRef<HTMLInputElement>(null);
 	const { pushCell } = useReduxActions();
@@ -84,7 +93,7 @@ export default function CodeEditor() {
 				<div className="tabs gap-2 font-mono">
 					{CellLanguages.map((lang) => (
 						<button
-							className={cn("tab w-16 px-2", {
+							className={cn("tab px-2", {
 								"tab-active": lang === activePane,
 							})}
 							key={lang}
@@ -97,7 +106,7 @@ export default function CodeEditor() {
 					))}
 				</div>
 				<label className="cursor-pointer label">
-					<span className="label-text text-sm mr-2">vim mode</span>
+					<span className="label-text text-sm mr-2">vim</span>
 					<input
 						type="checkbox"
 						className="toggle bg-indigo-400 toggle-sm"
@@ -108,13 +117,23 @@ export default function CodeEditor() {
 			</header>
 			<div ref={editor} />
 			<footer className="absolute right-1 bottom-1 hidden group-hover:block group-focus:block">
-				<button
-					onClick={() => {
-						pushCell({ lang: activePane, code, autoExecute: true });
-					}}
-				>
-					<PlayIcon className="w-8 h-8 hover:stroke-primary" />
-				</button>
+				{!engine ? (
+					<button
+						className="btn btn-secondary btn-outline z-10"
+						disabled={pending && !engine}
+						onClick={() => initEngineFunc()}
+					>
+						{pending ? "Initializing ..." : "Initialize"}
+					</button>
+				) : (
+					<button
+						onClick={() => {
+							pushCell({ lang: activePane, code, autoExecute: true });
+						}}
+					>
+						<PlayIcon className="w-8 h-8 hover:stroke-primary" />
+					</button>
+				)}
 			</footer>
 		</section>
 	);

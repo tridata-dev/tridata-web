@@ -4,7 +4,10 @@ export default function SiteHeader() {
 			<nav className="mx-auto flex max-w-7xl items-center justify-center p-2 lg:px-4">
 				<ul className="flex items-center">
 					<li>
-						<a href="https://github.com/tridata" className="font-mono text-xl">
+						<a
+							href="https://github.com/tridata-dev"
+							className="font-mono text-xl hover:text-secondary"
+						>
 							tridata
 						</a>
 					</li>

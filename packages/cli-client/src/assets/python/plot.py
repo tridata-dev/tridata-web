@@ -1,3 +1,5 @@
+# install package with
+# import micropip; micropip.install("library")
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -12,9 +14,6 @@ s2 = np.sin(2 * np.pi * 10 * t) + nse2
 
 fig, axs = plt.subplots(2, 1)
 axs[0].plot(t, s1, t, s2)
-axs[0].set_xlim(0, 2)
-axs[0].set_xlabel("Time")
-axs[0].set_ylabel("s1 and s2")
 axs[0].grid(True)
 
 cxy, f = axs[1].cohere(s1, s2, 256, 1.0 / dt)

@@ -4,31 +4,24 @@ import { useReduxSelector } from "@/redux/store";
 import { useContext, useState } from "react";
 import { PythonContext } from "@/contexts/python";
 import { useEngine, useInitEngine } from "@/hooks/engines";
+import { useTaskActions } from "@/hooks/tasks";
+import { TaskType } from "@/contexts/tasks";
 
 type Props = {
 	lang: CellLanguage;
 };
 
 export default function LanguageConsole({ lang }: Props) {
-	const initEngine = useInitEngine();
-	const engine = useEngine({ lang });
-	const { initPythonEngine } = useContext(PythonContext);
+	const { engine, pending, initEngineFunc } = useEngine({ lang });
 	const [disabled, setDisabled] = useState(false);
-
-	let initEngineFunc: Function;
-	if (lang === CellLanguage.PYTHON) {
-		initEngineFunc = initPythonEngine;
-	} else if (lang === CellLanguage.R) {
-		initEngineFunc = () => initEngine({ lang });
-	} else {
-		initEngineFunc = () => initEngine({ lang });
-	}
 
 	const hanldeInit = async () => {
 		setDisabled(true);
 		await initEngineFunc();
 		setDisabled(false);
 	};
+
+	const buttonLoading = disabled || pending;
 
 	const { commands, orders, prompt } = useReduxSelector(
 		(state) => state.console[lang],
@@ -57,10 +50,10 @@ export default function LanguageConsole({ lang }: Props) {
 			) : (
 				<button
 					className="btn btn-outline btn-sm btn-secondary"
-					onClick={hanldeInit}
-					disabled={disabled}
+					onClick={() => hanldeInit()}
+					disabled={buttonLoading}
 				>
-					Initialize {lang}
+					{buttonLoading ? "Initializing ..." : "Initialize"}
 				</button>
 			)}
 			{orders.map((id) => {

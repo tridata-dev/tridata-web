@@ -27,7 +27,7 @@ export const useRunCode = ({
 	type = "cell",
 }: { id: string; lang: CellLanguage; type?: "cell" | "command" }) => {
 	const dispatch = useReduxDispatch();
-	const engine = useEngine({ lang });
+	const { engine } = useEngine({ lang });
 	const { addTask, removeTask } = useTaskActions();
 	const run = async () => {
 		if (!engine) {

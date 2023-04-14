@@ -5,7 +5,6 @@ import type { PythonEngine, REngine, SqlEngine } from "@tridata/core";
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { TaskType } from "./tasks";
-import { sleep } from "@/lib/utils";
 import { useReduxSelector } from "@/redux/store";
 
 type ActionsType =
