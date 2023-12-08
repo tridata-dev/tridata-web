@@ -2,9 +2,9 @@
 mtcars |> head()
 
 # install package with
-webr::install("ggplot2")
+suppressMessages(webr::install("ggplot2"))
 
-library(dplyr)
+suppressMessages(library(dplyr))
 library(ggplot2)
 
 diamonds |>
