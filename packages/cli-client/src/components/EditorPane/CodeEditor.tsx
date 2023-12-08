@@ -8,16 +8,9 @@ import {
 	vimExtension,
 } from "@/lib/editor";
 import { useReduxSelector } from "@/redux/store";
-import { Command, EditorView } from "@codemirror/view";
+import { EditorView } from "@codemirror/view";
 import { useCodeMirror } from "@uiw/react-codemirror";
-import {
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useReduxActions } from "@/hooks/redux";
 import { CellLanguage, CellLanguages } from "@/lib/constants";
 import { cn } from "@/lib/utils";

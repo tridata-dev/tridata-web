@@ -41,10 +41,7 @@ const LanguageSwitch = ({ id, lang }: { id: string; lang: CellLanguage }) => {
 				{lang}
 				<ChevronDownIcon className="w-4 h-4" />
 			</button>
-			<ul
-				tabIndex={0}
-				className="dropdown-content menu w-24 text-sm bg-base-100"
-			>
+			<ul className="dropdown-content menu w-24 text-sm bg-base-100">
 				{CellLanguages.map((lang) => (
 					<li key={lang}>
 						<button onClick={() => switchLanguage(lang)}>{lang}</button>

@@ -27,6 +27,7 @@ export const runCell = createAsyncThunk<
 
 	if (lang === CellLanguage.R) {
 		const results = await runR({ code, engine: engine as REngine });
+		console.log("results", results);
 		const error = results.some((r) => r.type === "stderr");
 		return { data: results, error };
 	}

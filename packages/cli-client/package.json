@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build:worker": "cp ./node_modules/@r-wasm/webr/dist/webr-worker.js ./public/",
-    "build:serviceworker": "cp ./node_modules/@r-wasm/webr/dist/webr-serviceworker.js ./public/",
+    "build:worker": "cp ./node_modules/webr/dist/webr-worker.js ./public/",
+    "build:serviceworker": "cp ./node_modules/webr/dist/webr-serviceworker.js ./public/",
     "build": "vite build && tsc",
     "preview": "vite preview"
   },
@@ -15,7 +15,8 @@
     "@codemirror/lang-sql": "^6.4.0",
     "@codemirror/language": "^6.6.0",
     "@codemirror/legacy-modes": "^6.3.1",
-    "@codemirror/view": "^6.9.2",
+    "@codemirror/state": "^6.3.3",
+    "@codemirror/view": "^6.22.1",
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.16",
     "@radix-ui/react-dialog": "^1.0.3",
@@ -26,7 +27,7 @@
     "@replit/codemirror-vim": "^6.0.11",
     "@tridata/core": "workspace:^0.0.1",
     "@uiw/codemirror-theme-bbedit": "^4.19.9",
-    "@uiw/react-codemirror": "^4.19.9",
+    "@uiw/react-codemirror": "^4.21.21",
     "@uiw/react-split": "^5.8.10",
     "ansi-to-react": "^6.1.6",
     "class-variance-authority": "^0.4.0",
@@ -53,6 +54,7 @@
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7",
     "typescript": "^4.9.3",
-    "vite": "^4.1.0"
+    "vite": "^4.1.0",
+    "webr": "^0.2.2"
   }
 }

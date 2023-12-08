@@ -4,26 +4,27 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 type Props = {
 	variant: ResultVariant;
-	drawCanvasCode: string;
+	images: ImageBitmap[];
 };
 
 const canvasWidth = 1000;
 const canvasHeight = 1000;
 
-export default function RCanvas({ drawCanvasCode, variant }: Props) {
+export default function RCanvas({ images, variant }: Props) {
 	const isConsole = variant === "command";
 	const scale = isConsole ? 0.4 : 0.45;
-	const renderCanvas = useCallback(
-		(canvas: HTMLCanvasElement) => {
-			if (canvas) {
-				const ctx = canvas.getContext("2d");
-				if (ctx && drawCanvasCode !== "") {
-					Function(drawCanvasCode).bind(ctx)();
-				}
-			}
-		},
-		[drawCanvasCode],
-	);
+	const ref = useRef<HTMLCanvasElement>(null);
+
+	useEffect(() => {
+		if (!ref.current) return;
+
+		const ctx = ref.current.getContext("2d");
+		if (!ctx) return;
+
+		images.forEach((image) => {
+			ctx.drawImage(image, 0, 0, canvasWidth, canvasHeight);
+		});
+	}, [images]);
 
 	return (
 		<div
@@ -32,7 +33,7 @@ export default function RCanvas({ drawCanvasCode, variant }: Props) {
 			})}
 			style={{ width: canvasWidth * scale, height: canvasHeight * scale }}
 		>
-			<canvas ref={renderCanvas} width={canvasWidth} height={canvasHeight} />
+			<canvas ref={ref} width={canvasWidth} height={canvasHeight} />
 		</div>
 	);
 }

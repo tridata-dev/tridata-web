@@ -7,10 +7,10 @@ export type RequireOnly<T, P extends keyof T> = Partial<Omit<T, P>> &
 export type Engine = REngine | PythonEngine | SqlEngine;
 export type ResultVariant = "cell" | "command";
 
-export type RCellResultType = "stdout" | "stderr" | "canvasExec" | "prompt";
+export type RCellResultType = "stdout" | "stderr" | "canvas" | "prompt";
 export type RCellResult = {
 	type: RCellResultType;
-	data: string;
+	data: string | ImageBitmap[];
 };
 export type SQLCellResultType = "stdout" | "stderr";
 

@@ -12,11 +12,14 @@ export default function RResult({ result, variant }: Props) {
 		return (
 			<Ansi className="whitespace-pre text-sm font-mono">{result.data}</Ansi>
 		);
-	} else if (result.type === "stderr") {
-		return <pre className="text-red-500 rounded-md text-sm">{result.data}</pre>;
-	} else if (result.type === "canvasExec") {
-		return <RCanvas drawCanvasCode={result.data} variant={variant} />;
-	} else {
-		return null;
 	}
+	if (result.type === "stderr") {
+		return <pre className="text-red-500 rounded-md text-sm">{result.data}</pre>;
+	}
+
+	if (result.type === "canvas") {
+		return <RCanvas images={result.data} variant={variant} />;
+	}
+
+	return null;
 }
